@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/artikelNameID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Artikel Name" />
+
+    <TextView
+        android:id="@+id/artikelZahlID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Artikel Anzahl"
+        app:layout_constraintTop_toBottomOf="@+id/artikelNameID" />
+
+    <TextView
+        android:id="@+id/verwaltungID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="IT/Verwaltung"
+        app:layout_constraintTop_toBottomOf="@+id/artikelZahlID" />
+
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:id="@+id/ripple"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        app:mrl_rippleColor="#2962FF"
+        app:mrl_rippleDelayClick="true"
+        app:mrl_rippleRoundedCorners="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <Button
+            android:id="@+id/deleteArtikelID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/ic_clear_black_24dp"
+            />
+    </com.balysv.materialripple.MaterialRippleLayout>
+
+</android.support.constraint.ConstraintLayout>

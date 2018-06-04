@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "540200630185",
+    "firebase_url": "https://kotlineinkaufsapp.firebaseio.com",
+    "project_id": "kotlineinkaufsapp",
+    "storage_bucket": "kotlineinkaufsapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540200630185:android:f99711be1c30194c",
+        "android_client_info": {
+          "package_name": "com.codefrog.dioritbajrami.einkaufsappkotlin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "540200630185-dtgn8agh1akj5fk0u78jc9u3lev1g3j5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codefrog.dioritbajrami.einkaufsappkotlin",
+            "certificate_hash": "77a450c3f95f836638bc4f7d1a8ec5e2e19a5a3b"
+          }
+        },
+        {
+          "client_id": "540200630185-ln4lg0r862iqlqgs0ph5jui3f05vqfjg.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "540200630185-ln4lg0r862iqlqgs0ph5jui3f05vqfjg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCvebHl0IlXBohFgc2ymxxC0Ceb27PcFw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "540200630185-ln4lg0r862iqlqgs0ph5jui3f05vqfjg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
