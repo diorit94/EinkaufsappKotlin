@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:android.support.design="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingBottom="20dp"
     android:paddingLeft="15dp"
@@ -8,26 +9,23 @@
     android:paddingTop="20dp"
     android:minWidth="300dp">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/nameLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:hint="@string/artikel_name"
+                android.support.design:hintAnimationEnabled="true"
+                android.support.design:hintEnabled="true"
+                >
 
                 <AutoCompleteTextView
                     android:id="@+id/nameEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:capitalize="sentences"
-                    android:hint="Artikelname"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
@@ -36,13 +34,16 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/ammountLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:hint="@string/artikelzahl"
+                android.support.design:hintAnimationEnabled="true"
+                android.support.design:hintEnabled="true"
+                >
 
                 <EditText
                     android:id="@+id/ammountEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Artikelanzahl"
                     android:inputType="number"
                     android:maxLength="2" />
             </android.support.design.widget.TextInputLayout>
@@ -69,21 +70,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="IT" />
+                    android:text="@string/it" />
 
                 <RadioButton
                     android:id="@+id/radio_verwaltung"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Verwaltung" />
+                    android:text="@string/Verwaltung" />
 
                 <RadioButton
                     android:id="@+id/radio_person"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Person" />
+                    android:text="@string/Person" />
             </RadioGroup>
 
             <Button
@@ -91,12 +92,9 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:text="Bestellen"
+                android:text="@string/Bestellen"
                 />
 
-        </LinearLayout>
-    </ScrollView>
 </LinearLayout>
 

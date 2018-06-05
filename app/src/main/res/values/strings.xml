@@ -5,4 +5,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="it">IT</string>
     <string name="Verwaltung">Verwaltung</string>
+    <string name="Person">Person</string>
+
+    <string name="artikel_name">Artikelname</string>
+    <string name="artikelzahl">Artikelzahl</string>
+    <string name="Bestellen">Bestellen</string>
+    <string name="Administrator">Als Administrator Anmelden</string>
+
 </resources>

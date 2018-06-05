@@ -62,39 +62,43 @@ class FirebaseClient{
     fun saveFirebaseData(title: String, anzahl: Long,userID:String, verwalter: String){
         val key = firRef.push().key
 
+        if(verwalter.contains("Person")){
+            firRef.child("Artikel").child(key).setValue(EInkaufsItem(title,anzahl,verwalter,key, userID, false))
+            return
+        }
         firRef.child("Artikel").orderByChild("name").equalTo(title).addListenerForSingleValueEvent(object : ValueEventListener{
 
-            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                override fun onDataChange(dataSnapshot: DataSnapshot?) {
 
-                for (fireDataSnapshot in dataSnapshot!!.getChildren()) {
+                    for (fireDataSnapshot in dataSnapshot!!.children) {
 
-                    val verwaltung = fireDataSnapshot.child("verwaltung").getValue(String::class.java)
-                    val zahl = fireDataSnapshot.child("anzahl").getValue(Int::class.java)!!
+                        val verwaltung = fireDataSnapshot.child("verwaltung").getValue(String::class.java)
+                        val zahl = fireDataSnapshot.child("anzahl").getValue(Int::class.java)!!
 
-                    if (fireDataSnapshot.exists() && verwaltung == verwalter) {
-                        val builder = AlertDialog.Builder(context)
-                        builder.setMessage("Es existiert bereits $zahl $title auf der $verwalter liste, noch $anzahl hinzufügen?")
-                        builder.setPositiveButton("Ja", DialogInterface.OnClickListener { dialog, id ->
-                            val beforeammount = fireDataSnapshot.child("anzahl").getValue(Int::class.java)!!
-                            fireDataSnapshot.ref.child("anzahl").setValue(beforeammount + anzahl)
-                        })
-                        builder.setNegativeButton("Nein", DialogInterface.OnClickListener { dialog, id ->
-                            // User cancelled the dialog
-                        })
-                        builder.show()
+                        if (fireDataSnapshot.exists() && verwaltung == verwalter) {
+                            val builder = AlertDialog.Builder(context)
+                            builder.setMessage("Es existiert bereits $zahl $title auf der $verwalter liste, noch $anzahl hinzufügen?")
+                            builder.setPositiveButton("Ja", DialogInterface.OnClickListener { dialog, id ->
+                                val beforeammount = fireDataSnapshot.child("anzahl").getValue(Int::class.java)!!
+                                fireDataSnapshot.ref.child("anzahl").setValue(beforeammount + anzahl)
+                            })
+                            builder.setNegativeButton("Nein", DialogInterface.OnClickListener { dialog, id ->
+                                // User cancelled the dialog
+                            })
+                            builder.show()
 
-                        return
+                            return
+                        }
                     }
+                    firRef.child("Artikel").child(key).setValue(EInkaufsItem(title,anzahl,verwalter,key, userID, false))
                 }
-                firRef.child("Artikel").child(key).setValue(EInkaufsItem(title,anzahl,verwalter,key, userID, false))
-
-            }
 
 
-            override fun onCancelled(p0: DatabaseError?) {
+                override fun onCancelled(p0: DatabaseError?) {
 
-            }
-        })
+                }
+            })
+
 
 
     }

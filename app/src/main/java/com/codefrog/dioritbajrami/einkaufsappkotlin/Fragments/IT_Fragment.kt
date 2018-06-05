@@ -1,7 +1,5 @@
 package com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -10,14 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.ListView
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EinkaufsItemAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.FirebaseClient
-import com.codefrog.dioritbajrami.einkaufsappkotlin.LoggedIn
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EInkaufsItem
 
 import com.codefrog.dioritbajrami.einkaufsappkotlin.R
-import com.google.firebase.auth.FirebaseUser
 
 class IT_Fragment : Fragment() {
 

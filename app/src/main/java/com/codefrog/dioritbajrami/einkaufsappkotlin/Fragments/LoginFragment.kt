@@ -1,10 +1,7 @@
 package com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments
 
 import android.app.Activity
-import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -13,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import com.codefrog.dioritbajrami.einkaufsappkotlin.BuildConfig
-import com.codefrog.dioritbajrami.einkaufsappkotlin.MainActivity
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.MainActivity
 
 import com.codefrog.dioritbajrami.einkaufsappkotlin.R
 import com.firebase.ui.auth.AuthUI
@@ -22,13 +19,8 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.common.SignInButton
 import com.google.firebase.auth.FirebaseAuth
 import java.util.*
-import android.R.string.cancel
 import android.app.Dialog
-import android.content.DialogInterface
-import android.widget.EditText
-import kotlinx.android.synthetic.main.add_alert_dialog.*
 import kotlinx.android.synthetic.main.custom_alert.*
-import kotlinx.android.synthetic.main.custom_alert.view.*
 
 
 class LoginFragment : Fragment() {
@@ -128,7 +120,7 @@ class LoginFragment : Fragment() {
     }
 
     fun alertDialog(){
-        var d = Dialog(activity)
+        val d = Dialog(activity)
         d.setTitle("Einloggen")
         d.setContentView(R.layout.custom_alert)
 
@@ -153,9 +145,9 @@ class LoginFragment : Fragment() {
     fun replaceFragment(){
         val activity = activity as MainActivity?
 
-        getActivity()!!.getSupportFragmentManager().beginTransaction().remove(this).commit();
+        getActivity()!!.getSupportFragmentManager().beginTransaction().remove(this).commit()
 
-        var fragmentTransaction = fragmentManager!!.beginTransaction()
+        val fragmentTransaction = fragmentManager!!.beginTransaction()
         fragmentTransaction.replace(R.id.content_frame, activity!!.menuFragment).commit()
 
     }
