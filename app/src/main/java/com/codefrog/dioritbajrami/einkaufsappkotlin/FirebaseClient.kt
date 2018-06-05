@@ -1,7 +1,10 @@
 package com.codefrog.dioritbajrami.einkaufsappkotlin
 
+import android.app.AlertDialog
+import android.content.Context
 import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
+import android.widget.Toast
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EmpfehlungsAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EInkaufsItem
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.Empfehlungen
@@ -9,6 +12,12 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import android.content.DialogInterface
+import android.support.v7.widget.RecyclerView
+import android.widget.Adapter
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EinkaufStartenAdapter
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EinkaufsItemAdapter
+
 
 class FirebaseClient{
 
@@ -17,17 +26,16 @@ class FirebaseClient{
 
     var artikelArray = ArrayList<EInkaufsItem>()
     var empfehlungArray = ArrayList<Empfehlungen>()
-    var arrayAdapter: BaseAdapter?=null
+    var arrayAdapter: EinkaufsItemAdapter?=null
     var empfehlungsAdapter: EmpfehlungsAdapter?=null
+    var shopAdapter: BaseAdapter?=null
 
+    var cons: Boolean?=null
 
-    constructor(artikelArray: ArrayList<EInkaufsItem>, arrayAdapter: BaseAdapter){
+    constructor(artikelArray: ArrayList<EInkaufsItem>, arrayAdapter: EinkaufsItemAdapter){
         this.artikelArray = artikelArray
         this.arrayAdapter = arrayAdapter
-    }
-
-    constructor(){
-
+        cons = true
     }
 
     constructor(empfehlungenArray: ArrayList<Empfehlungen>, adapter: EmpfehlungsAdapter){
@@ -35,13 +43,64 @@ class FirebaseClient{
         this.empfehlungsAdapter = adapter
     }
 
+    constructor(einkaufsArrayShop: ArrayList<EInkaufsItem>, baseadapter: BaseAdapter){
+        this.artikelArray = einkaufsArrayShop
+        this.shopAdapter = baseadapter
+        cons = false
+    }
+
+    constructor(){
+
+    }
+
+
+    var context:Context?=null
+    constructor(context: Context){
+        this.context = context
+    }
+
     fun saveFirebaseData(title: String, anzahl: Long,userID:String, verwalter: String){
-        var key = firRef.push().key
-        firRef.child("Artikel").child(key).setValue(EInkaufsItem(title,anzahl,verwalter,key, userID, false))
+        val key = firRef.push().key
+
+        firRef.child("Artikel").orderByChild("name").equalTo(title).addListenerForSingleValueEvent(object : ValueEventListener{
+
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+
+                for (fireDataSnapshot in dataSnapshot!!.getChildren()) {
+
+                    val verwaltung = fireDataSnapshot.child("verwaltung").getValue(String::class.java)
+                    val zahl = fireDataSnapshot.child("anzahl").getValue(Int::class.java)!!
+
+                    if (fireDataSnapshot.exists() && verwaltung == verwalter) {
+                        val builder = AlertDialog.Builder(context)
+                        builder.setMessage("Es existiert bereits $zahl $title auf der $verwalter liste, noch $anzahl hinzufügen?")
+                        builder.setPositiveButton("Ja", DialogInterface.OnClickListener { dialog, id ->
+                            val beforeammount = fireDataSnapshot.child("anzahl").getValue(Int::class.java)!!
+                            fireDataSnapshot.ref.child("anzahl").setValue(beforeammount + anzahl)
+                        })
+                        builder.setNegativeButton("Nein", DialogInterface.OnClickListener { dialog, id ->
+                            // User cancelled the dialog
+                        })
+                        builder.show()
+
+                        return
+                    }
+                }
+                firRef.child("Artikel").child(key).setValue(EInkaufsItem(title,anzahl,verwalter,key, userID, false))
+
+            }
+
+
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+        })
+
+
     }
 
     fun saveEmpfehlung(title: String){
-        var key = firRef.push().key
+        val key = firRef.push().key
         firRef.child("Empfehlung").child(key).setValue(Empfehlungen(title,key))
     }
 
@@ -57,14 +116,14 @@ class FirebaseClient{
 
                         artikelArray.clear()
 
-                        var td = dataSnapshot.value as HashMap<String, Any>
+                        val td = dataSnapshot.value as HashMap<String, Any>
 
                         for(key in td.keys){
 
-                            var post = td[key] as HashMap<String, Any>
+                            val post = td[key] as HashMap<String, Any>
 
                             //IF you want to save only Verwaltungs Data
-                            var verwalterData = post["verwaltung"].toString()
+                            val verwalterData = post["verwaltung"].toString()
                             if(verwalterData.contains(verwaltung)) {
                                 artikelArray.add(EInkaufsItem(
                                         post["name"] as String,
@@ -84,7 +143,12 @@ class FirebaseClient{
 
                             }
                         }
-                        arrayAdapter!!.notifyDataSetChanged()
+                        if(cons == false){
+                            shopAdapter!!.notifyDataSetChanged()
+                        } else if(cons == true){
+                            arrayAdapter!!.notifyDataSetChanged()
+                        }
+
                     }
 
                     override fun onCancelled(p0: DatabaseError?) {
@@ -101,10 +165,12 @@ class FirebaseClient{
                     return
                 }
 
-                var td = dataSnapshot!!.value as HashMap<String, Any>
+                empfehlungArray.clear()
+
+                val td = dataSnapshot.value as HashMap<String, Any>
 
                 for(key in td.keys){
-                    var empfehlung = td[key] as HashMap<String, Any>
+                    val empfehlung = td[key] as HashMap<String, Any>
 
                     empfehlungArray.add(Empfehlungen(
                             empfehlung["name"] as String,
@@ -128,10 +194,14 @@ class FirebaseClient{
 
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
 
-                var td = dataSnapshot!!.value as HashMap<String, Any>
+                if(!dataSnapshot!!.exists()){
+                    return
+                }
+
+                val td = dataSnapshot.value as HashMap<String, Any>
 
                 for(key in td.keys){
-                    var empfehlung = td[key] as HashMap<String, Any>
+                    val empfehlung = td[key] as HashMap<String, Any>
                     adapter.add(empfehlung["name"] as String)
                 }
 

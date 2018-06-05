@@ -7,37 +7,31 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.add_alert_dialog.*
 
-class Alerts{
+class Alerts(val context: Context){
 
-    var context: Context?=null
     var mAuth = FirebaseAuth.getInstance()
 
     var database = FirebaseDatabase.getInstance()
     var firRef = database.reference
     var empfehlungLista = ArrayList<String>()
 
-    var fireClient = FirebaseClient()
-
-
-    constructor(context: Context){
-        this.context = context
-    }
-
 
     fun startAlert() {
-        var adapter = ArrayAdapter<String>(context,R.layout.support_simple_spinner_dropdown_item)
+        val fireClient = FirebaseClient(context)
+
+        val adapter = ArrayAdapter<String>(context,R.layout.support_simple_spinner_dropdown_item)
         fireClient.getFirebaseEmpfehlungen1(adapter)
 
-        var d = Dialog(context)
+        val d = Dialog(context)
         d.setTitle("Einkaufen")
         d.setContentView(R.layout.add_alert_dialog)
 
-        var name = d.findViewById<AutoCompleteTextView>(R.id.nameEditText)
-        var ammount = d.findViewById<EditText>(R.id.ammountEditText)
+        val name = d.findViewById<AutoCompleteTextView>(R.id.nameEditText)
+        val ammount = d.findViewById<EditText>(R.id.ammountEditText)
 
         name.setAdapter(adapter)
 
-        var radio_person_btn = d.findViewById<RadioButton>(R.id.radio_person)
+        val radio_person_btn = d.findViewById<RadioButton>(R.id.radio_person)
 
         /*radio_person_btn.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, b ->
             if (radio_person_btn.isChecked()) {
@@ -49,10 +43,10 @@ class Alerts{
 
         d.saveBtn.setOnClickListener {
 
-            var currentUserID = mAuth!!.currentUser!!.uid
+            val currentUserID = mAuth!!.currentUser!!.uid
 
-            var radio_itbtn = d.findViewById<RadioButton>(R.id.radio_it)
-            var radio_verwaltung_btn = d.findViewById<RadioButton>(R.id.radio_verwaltung)
+            val radio_itbtn = d.findViewById<RadioButton>(R.id.radio_it)
+            val radio_verwaltung_btn = d.findViewById<RadioButton>(R.id.radio_verwaltung)
 
             if (!radio_itbtn.isChecked() && !radio_verwaltung_btn.isChecked() && !radio_person_btn.isChecked() || name.getText().toString().isEmpty() || ammount.getText().toString().isEmpty()){
                 Toast.makeText(context, "Bitte alle Felder füllen!", Toast.LENGTH_SHORT).show()
@@ -66,7 +60,7 @@ class Alerts{
                 d.dismiss()
             }
             else if(radio_person_btn.isChecked){
-                var usermAuth = FirebaseAuth.getInstance().currentUser!!.displayName
+                val usermAuth = FirebaseAuth.getInstance().currentUser!!.displayName
                 fireClient.saveFirebaseData(name.text.toString(),ammount.text.toString().toLong(), currentUserID, "(Person)$usermAuth")
                 d.dismiss()
             }
