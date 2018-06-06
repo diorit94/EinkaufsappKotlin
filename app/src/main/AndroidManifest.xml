@@ -22,7 +22,8 @@
             android:name=".Activities.LoggedIn"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activities.EinkaufStarten" />
-        <activity android:name=".Activities.Empfehlung_activity"></activity>
+        <activity android:name=".Activities.Empfehlung_activity" />
+        <activity android:name=".Activities.EhemaligeEinkaeufe"></activity>
     </application>
 
 </manifest>
