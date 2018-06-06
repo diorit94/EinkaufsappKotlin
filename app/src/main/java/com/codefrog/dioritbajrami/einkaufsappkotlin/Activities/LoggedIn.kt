@@ -17,9 +17,6 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_logged_in.*
 
 
-
-
-
 class LoggedIn : AppCompatActivity() {
 
     var mAuth: FirebaseAuth? = null
@@ -43,7 +40,7 @@ class LoggedIn : AppCompatActivity() {
         addItem = findViewById(R.id.addItemFab)
 
         addItem!!.setOnClickListener {
-            var alerts = Alerts(this)
+            val alerts = Alerts(this)
             alerts.startAlert()
         }
 
@@ -72,10 +69,10 @@ class LoggedIn : AppCompatActivity() {
 
 
     fun showSnackBar(title: String, anzahl: Long,userID:String, verwalter: String){
-        var snackBar = Snackbar
+        val snackBar = Snackbar
                 .make(coordinatorLayout!!,"$title wurde gelöscht!", Snackbar.LENGTH_LONG)
                 .setAction("Rückgängig machen"){
-                    var fireClient = FirebaseClient()
+                    val fireClient = FirebaseClient()
                     fireClient.saveFirebaseData(title,anzahl,userID,verwalter)
                 }
 

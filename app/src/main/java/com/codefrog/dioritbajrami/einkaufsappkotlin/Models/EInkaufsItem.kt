@@ -1,3 +1,3 @@
 package com.codefrog.dioritbajrami.einkaufsappkotlin.Models
 
-data class EInkaufsItem(val name: String, val anzahl: Long, val verwaltung: String, val firebaseID: String, val userID: String, val bought: Boolean){}
+data class EInkaufsItem(var name: String, var anzahl: Long, var verwaltung: String, var firebaseID: String, var userID: String, var bought: Boolean){}

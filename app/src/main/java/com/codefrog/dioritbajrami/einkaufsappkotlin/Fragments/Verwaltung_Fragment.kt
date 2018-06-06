@@ -34,6 +34,7 @@ class Verwaltung_Fragment : Fragment() {
 
         val firebaseClient = FirebaseClient(itemArray,itemAdapter!!)
         firebaseClient.getFirebaseData("Verwaltung")
+        //firebaseClient.refreshData()
 
         return view
     }

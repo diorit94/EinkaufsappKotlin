@@ -12,9 +12,6 @@ class Alerts(val context: Context){
     var mAuth = FirebaseAuth.getInstance()
 
     var database = FirebaseDatabase.getInstance()
-    var firRef = database.reference
-    var empfehlungLista = ArrayList<String>()
-
 
     fun startAlert() {
         val fireClient = FirebaseClient(context)

@@ -12,7 +12,13 @@ import com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.MainActivity
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EInkaufsItem
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EhemaligeEinkaeufe
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.MenuItem
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.main_list_row.view.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainMenuAdapter(var context: Context, var menuArray: ArrayList<MenuItem>) : BaseAdapter() {
 
@@ -40,15 +46,15 @@ class MainMenuAdapter(var context: Context, var menuArray: ArrayList<MenuItem>) 
                 } else if (position == 2) {
                     (context as MainActivity).changeIntent(2)
                 }else if (position == 3) {
-                    //(context as MainActivity).firRef.child("Artikel").removeValue()
-                    val key = (context as MainActivity).firRef.push().key
+
+                    val sdf = SimpleDateFormat("d/M/yyyy")
+                    val currentDate = sdf.format(Date())
+
                     val arrayList = ArrayList<EInkaufsItem>()
 
-                    arrayList.add(EInkaufsItem("Pizza",1,"verwaltung", "FIRID","UID",false))
-                    arrayList.add(EInkaufsItem("Pizza",1,"verwaltung", "FIRID","UID",false))
-                    arrayList.add(EInkaufsItem("Pizza",1,"verwaltung", "FIRID","UID",false))
+                    val fireClient = FirebaseClient()
+                    fireClient.saveEhemaligeEinkaeufe(currentDate,arrayList)
 
-                    (context as MainActivity).firRef.child("Ehemalige Einkaeufe").child(key).setValue(EhemaligeEinkaeufe("08.05.2018",arrayList))
                 }else if (position == 4) {
                     val i = Intent(context, Empfehlung_activity::class.java)
                     context.startActivity(i)
@@ -60,6 +66,7 @@ class MainMenuAdapter(var context: Context, var menuArray: ArrayList<MenuItem>) 
 
         return itemView
     }
+
 
     override fun getItem(p0: Int): Any {
         return menuArray[p0]

@@ -34,6 +34,7 @@ class IT_Fragment : Fragment() {
 
         val firebaseClient = FirebaseClient(itemArray,itemAdapter!!)
         firebaseClient.getFirebaseData("IT")
+        //firebaseClient.refreshData()
 
         return view
     }

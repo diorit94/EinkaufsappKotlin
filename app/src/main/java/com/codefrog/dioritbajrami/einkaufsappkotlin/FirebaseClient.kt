@@ -17,6 +17,8 @@ import android.support.v7.widget.RecyclerView
 import android.widget.Adapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EinkaufStartenAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EinkaufsItemAdapter
+import android.text.method.TextKeyListener.clear
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EhemaligeEinkaeufe
 
 
 class FirebaseClient{
@@ -48,6 +50,11 @@ class FirebaseClient{
         this.shopAdapter = baseadapter
         cons = false
     }
+
+    constructor(einkaufsArrayShop: ArrayList<EInkaufsItem>){
+        this.artikelArray = einkaufsArrayShop
+    }
+
 
     constructor(){
 
@@ -110,15 +117,17 @@ class FirebaseClient{
 
     //Load data from Firebase
     fun getFirebaseData(verwaltung: String) {
+
         firRef.child("Artikel")
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                        artikelArray.clear()
 
                         if(!dataSnapshot.exists()){
                             return
                         }
 
-                        artikelArray.clear()
 
                         val td = dataSnapshot.value as HashMap<String, Any>
 
@@ -147,6 +156,7 @@ class FirebaseClient{
 
                             }
                         }
+
                         if(cons == false){
                             shopAdapter!!.notifyDataSetChanged()
                         } else if(cons == true){
@@ -234,4 +244,39 @@ class FirebaseClient{
         })
     }
 
+    fun saveEhemaligeEinkaeufe(currentDate: String,einkaufsArrayShop: ArrayList<EInkaufsItem>){
+        firRef.child("Artikel").addListenerForSingleValueEvent(object: ValueEventListener{
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                einkaufsArrayShop.clear()
+
+                if(!dataSnapshot.exists()){
+                    return
+                }
+
+                val td = dataSnapshot.value as HashMap<String, Any>
+
+                for(key in td.keys){
+                    val post = td[key] as HashMap<String, Any>
+
+                    einkaufsArrayShop.add(EInkaufsItem(
+                            post["name"] as String,
+                            post["anzahl"] as Long,
+                            post["verwaltung"] as String,
+                            post["firebaseID"] as String,
+                            post["userID"] as String,
+                            post["bought"] as Boolean))
+                }
+                //SAVE THE DATA TO EHEMALIGE EINKAEUFE
+                firRef.child("Ehemalige Einkaeufe").push().setValue(EhemaligeEinkaeufe(currentDate,einkaufsArrayShop))
+
+                //THEN REMOVE THE DATA FROM THE ARTICEL
+                firRef.child("Artikel").removeValue()
+
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {
+            }
+        })
+    }
 }
