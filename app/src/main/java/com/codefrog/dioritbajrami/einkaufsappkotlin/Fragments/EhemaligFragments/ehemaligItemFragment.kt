@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EhemaligeEinkaufItemAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.FirebaseClient
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EInkaufsItem
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EhemaligeEinkaeufe
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EinkaufsItemWrapper
 
 
@@ -19,9 +20,10 @@ class ehemaligItemFragment : Fragment() {
     var listView: ListView?=null
     var adapter: EhemaligeEinkaufItemAdapter?=null
     var arrayEhemaligItemList = ArrayList<EInkaufsItem>()
+    var titleString : String?=null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view: View
+        val view: View
         view = inflater.inflate(R.layout.fragment_ehemalig_item, container, false)
 
         listView = view.findViewById(R.id.ehemaligeItemListViewID)
@@ -30,6 +32,7 @@ class ehemaligItemFragment : Fragment() {
         if (bundle != null) {
 
             val keyString = bundle.getString("key_key")
+            titleString = bundle.getString("name_key")
 
             //GET THE ARRAY
             //var wrap = bundle.getSerializable("obj") as EinkaufsItemWrapper
@@ -40,9 +43,11 @@ class ehemaligItemFragment : Fragment() {
 
 
             //LOAD THE DATA
-            var firebaseClient = FirebaseClient()
+            val firebaseClient = FirebaseClient()
             firebaseClient.loadEhemaligItemData(keyString, arrayEhemaligItemList, adapter!!)
         }
+
+        activity!!.setTitle(titleString)
 
         return view
     }

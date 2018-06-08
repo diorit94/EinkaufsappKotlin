@@ -1,5 +1,6 @@
 package com.codefrog.dioritbajrami.einkaufsappkotlin.Activities
 
+import android.app.PendingIntent.getActivity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.EhemaligFragments.EhemaligeEinkaufsListe
@@ -25,7 +26,19 @@ class EhemaligeEinkaeufe : AppCompatActivity() {
     }
 
     fun changeFragment(){
-        var fragmentTransaction1 = fragmentManager.beginTransaction()
+        val fragmentTransaction1 = fragmentManager.beginTransaction()
         fragmentTransaction1.replace(R.id.ehemalige_einkaeufe_frame, itemListFragment).commit()
+        fragmentTransaction1.addToBackStack(null)
     }
+
+
+    override fun onBackPressed() {
+        if(fragmentManager.backStackEntryCount>0){
+            val fm = getSupportFragmentManager()
+            fm.popBackStack()
+        }else {
+            super.onBackPressed()
+        }
+    }
+
 }
