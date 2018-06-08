@@ -3,18 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.EhemaligeEinkaufsListe">
+    tools:context=".Fragments.ehemaligItemFragment">
 
     <ListView
-        android:id="@+id/ehemalige_einkaeufe_ListViewID"
+        android:id="@+id/ehemaligeItemListViewID"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
-    <Button
-        android:id="@+id/changeFragmentID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:text="Change fragment"/>
 
 </FrameLayout>

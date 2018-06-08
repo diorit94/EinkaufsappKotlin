@@ -45,22 +45,23 @@ class MainMenuAdapter(var context: Context, var menuArray: ArrayList<MenuItem>) 
                     alerts.startAlert()
                 } else if (position == 2) {
                     (context as MainActivity).changeIntent(2)
-                }else if (position == 3) {
+                } else if (position == 3) {
 
                     val sdf = SimpleDateFormat("d/M/yyyy")
                     val currentDate = sdf.format(Date())
 
-                    val arrayList = ArrayList<EInkaufsItem>()
 
                     val fireClient = FirebaseClient()
-                    fireClient.saveEhemaligeEinkaeufe(currentDate,arrayList)
+                    fireClient.saveEhemaligeEinkaeufe(currentDate)
 
-                }else if (position == 4) {
-                    val i = Intent(context, Empfehlung_activity::class.java)
+                } else if (position == 4) {
+                    /*val i = Intent(context, Empfehlung_activity::class.java)
+                    context.startActivity(i)*/
+                    val i = Intent(context, com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.EhemaligeEinkaeufe::class.java)
                     context.startActivity(i)
+
                 }
             }
-
 
         }
 
