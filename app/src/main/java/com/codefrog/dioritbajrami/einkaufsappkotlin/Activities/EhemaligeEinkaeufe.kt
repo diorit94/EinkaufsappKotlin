@@ -1,10 +1,9 @@
 package com.codefrog.dioritbajrami.einkaufsappkotlin.Activities
 
-import android.app.PendingIntent.getActivity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.EhemaligeEinkaufsListe
-import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.ehemaligItemFragment
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.EhemaligFragments.EhemaligeEinkaufsListe
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.EhemaligFragments.ehemaligItemFragment
 import com.codefrog.dioritbajrami.einkaufsappkotlin.R
 
 

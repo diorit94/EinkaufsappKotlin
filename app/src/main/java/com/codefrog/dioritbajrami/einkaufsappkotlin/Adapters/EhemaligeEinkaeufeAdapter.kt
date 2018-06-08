@@ -5,17 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.Toast
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EhemaligeEinkaeufe
 import com.codefrog.dioritbajrami.einkaufsappkotlin.R
 import kotlinx.android.synthetic.main.ehemalige_einkaeufe_row.view.*
 import android.os.Bundle
-import android.R.attr.key
-import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.EhemaligeEinkaufsListe
-import android.R.attr.key
-import android.app.FragmentManager
-import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.ehemaligItemFragment
-import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EinkaufsItemWrapper
 
 
 class EhemaligeEinkaeufeAdapter(var context: Context, var arrayList: ArrayList<EhemaligeEinkaeufe>) : BaseAdapter(){
@@ -31,8 +24,6 @@ class EhemaligeEinkaeufeAdapter(var context: Context, var arrayList: ArrayList<E
 
 
         view.row_dateID.text = ehemaligeEinkaufe.date
-
-        Toast.makeText(context,ehemaligeEinkaufe.key, Toast.LENGTH_SHORT).show()
 
         view.setOnClickListener {
             var cx = (context as com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.EhemaligeEinkaeufe)

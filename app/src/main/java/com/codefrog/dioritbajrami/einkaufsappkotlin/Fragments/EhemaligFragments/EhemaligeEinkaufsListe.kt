@@ -1,4 +1,4 @@
-package com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments
+package com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.EhemaligFragments
 
 import android.content.Context
 import android.net.Uri

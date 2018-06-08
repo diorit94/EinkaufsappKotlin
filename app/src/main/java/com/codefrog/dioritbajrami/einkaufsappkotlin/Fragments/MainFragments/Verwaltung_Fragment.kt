@@ -1,4 +1,4 @@
-package com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments
+package com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.MainFragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -14,7 +14,8 @@ import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EInkaufsItem
 
 import com.codefrog.dioritbajrami.einkaufsappkotlin.R
 
-class IT_Fragment : Fragment() {
+class Verwaltung_Fragment : Fragment() {
+
 
     var recyclerView: RecyclerView?=null
 
@@ -22,21 +23,19 @@ class IT_Fragment : Fragment() {
     var itemAdapter: EinkaufsItemAdapter?=null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_it_, container, false)
+        val view = inflater.inflate(R.layout.fragment_verwaltung_, container, false)
 
-        recyclerView = view.findViewById(R.id.ITListView)
+        recyclerView = view.findViewById(R.id.VerwaltungListView)
         recyclerView!!.layoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
 
         itemAdapter = EinkaufsItemAdapter(context!!,itemArray)
 
         recyclerView!!.adapter = itemAdapter
 
-
         val firebaseClient = FirebaseClient(itemArray,itemAdapter!!)
-        firebaseClient.getFirebaseData("IT")
+        firebaseClient.getFirebaseData("Verwaltung")
         //firebaseClient.refreshData()
 
         return view
     }
-
 }

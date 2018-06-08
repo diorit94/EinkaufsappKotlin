@@ -8,9 +8,9 @@ import android.support.design.widget.Snackbar
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.CostompagerAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Alerts
 import com.codefrog.dioritbajrami.einkaufsappkotlin.FirebaseClient
-import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.IT_Fragment
-import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.Person_Fragment
-import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.Verwaltung_Fragment
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.MainFragments.IT_Fragment
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.MainFragments.Person_Fragment
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.MainFragments.Verwaltung_Fragment
 import com.codefrog.dioritbajrami.einkaufsappkotlin.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*

@@ -1,4 +1,4 @@
-package com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments
+package com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.MainFragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

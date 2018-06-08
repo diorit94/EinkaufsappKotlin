@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.LoginFragment
-import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.MenuFragment
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.MenuLoginFragments.LoginFragment
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.MenuLoginFragments.MenuFragment
 import com.codefrog.dioritbajrami.einkaufsappkotlin.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase

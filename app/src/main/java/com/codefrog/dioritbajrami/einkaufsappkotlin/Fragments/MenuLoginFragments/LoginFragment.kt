@@ -1,4 +1,4 @@
-package com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments
+package com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.MenuLoginFragments
 
 import android.app.Activity
 import android.content.Intent
