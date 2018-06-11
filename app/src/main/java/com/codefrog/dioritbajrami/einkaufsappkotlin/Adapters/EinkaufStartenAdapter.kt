@@ -10,6 +10,8 @@ import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EInkaufsItem
 import com.codefrog.dioritbajrami.einkaufsappkotlin.R
 import kotlinx.android.synthetic.main.einkauf_starten_row.view.*
 import android.view.animation.AlphaAnimation
+import android.widget.Toast
+import com.codefrog.dioritbajrami.einkaufsappkotlin.FirebaseClient
 
 
 class EinkaufStartenAdapter(var context: Context, var einkaufStartenList: ArrayList<EInkaufsItem>) : BaseAdapter(){
@@ -29,7 +31,6 @@ class EinkaufStartenAdapter(var context: Context, var einkaufStartenList: ArrayL
         if(einkaufItem.bought == true){
             itemView.checkBoxStartID.isChecked = true
             itemView.coordinatorLayoutID.setBackgroundResource(R.color.grey)
-
         } else if(einkaufItem.bought == false){
             itemView.checkBoxStartID.isChecked = false
         }
@@ -44,6 +45,7 @@ class EinkaufStartenAdapter(var context: Context, var einkaufStartenList: ArrayL
 
         return itemView
     }
+    var firebaseClient = FirebaseClient()
 
     fun checkBoxhChange(bought: Boolean, id: String){
         if(bought == false){

@@ -12,6 +12,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import android.content.DialogInterface
+import android.util.Log
+import android.widget.Toast
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EinkaufsItemAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EhemaligeEinkaufItemAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EhemaligeEinkaeufe
@@ -132,6 +134,7 @@ class FirebaseClient {
 
 
                         val td = dataSnapshot.value as HashMap<String, Any>
+                        var counterTrue:Boolean ?=null
 
                         for (key in td.keys) {
 
@@ -155,9 +158,10 @@ class FirebaseClient {
                                         post["firebaseID"] as String,
                                         post["userID"] as String,
                                         post["bought"] as Boolean))
-
                             }
                         }
+
+
 
                         if (cons == false) {
                             shopAdapter!!.notifyDataSetChanged()
@@ -171,6 +175,8 @@ class FirebaseClient {
                     }
                 })
     }
+
+
 
     fun getFirebaseEmpfehlungen() {
         firRef.child("Empfehlung").addValueEventListener(object : ValueEventListener {
@@ -358,4 +364,19 @@ class FirebaseClient {
         })
     }
 
+    fun deleteFirebase(mainBranch: String, key: String){
+        val query = firRef.child(mainBranch).orderByChild("firebaseID").equalTo(key)
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                for(firesnapshot in dataSnapshot!!.children){
+                    firesnapshot.ref.removeValue()
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+        })
+    }
 }

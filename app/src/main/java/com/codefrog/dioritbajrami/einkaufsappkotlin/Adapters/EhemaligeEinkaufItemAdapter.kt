@@ -21,6 +21,7 @@ class EhemaligeEinkaufItemAdapter(var context: Context, var einkaufsArray: Array
 
         view.anzahlID.text = einkaufsItem.anzahl.toString()
         view.ehemalige_text_id.text = einkaufsItem.name
+        view.ehemalig_verwaltung_id.text = einkaufsItem.verwaltung
 
         return view
     }

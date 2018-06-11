@@ -9,8 +9,12 @@ import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EmpfehlungsAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.FirebaseClient
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.Empfehlungen
 import com.codefrog.dioritbajrami.einkaufsappkotlin.R
+import android.support.v7.widget.helper.ItemTouchHelper
+import com.codefrog.dioritbajrami.einkaufsappkotlin.RecyclerItemTouchHelper
 
-class Empfehlung_activity : AppCompatActivity() {
+
+
+class Empfehlung_activity : AppCompatActivity(), RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
     var recyclerView: RecyclerView?=null
     var empfehlungsArray = ArrayList<Empfehlungen>()
@@ -27,6 +31,9 @@ class Empfehlung_activity : AppCompatActivity() {
         val adapter = EmpfehlungsAdapter(empfehlungsArray)
         recyclerView!!.adapter = adapter
 
+        val itemTouchHelperCallback = RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this)
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView)
+
         var firebaseClient = FirebaseClient(empfehlungsArray, adapter)
         firebaseClient.getFirebaseEmpfehlungen()
 
@@ -39,4 +46,13 @@ class Empfehlung_activity : AppCompatActivity() {
         empfehlungsArray.add(Empfehlungen("Atifete"))
 
     }*/
+
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int, position: Int) {
+        val firebaseClient = FirebaseClient()
+        if (viewHolder is EmpfehlungsAdapter.ViewHolder){
+            var key : String = empfehlungsArray.get(viewHolder.adapterPosition).firebaseID
+            firebaseClient.deleteFirebase("Empfehlung", key)
+        }
+    }
+
 }

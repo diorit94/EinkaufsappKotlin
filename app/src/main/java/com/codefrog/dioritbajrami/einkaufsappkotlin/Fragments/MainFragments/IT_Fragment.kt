@@ -8,13 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EinkaufsItemAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.FirebaseClient
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EInkaufsItem
 
 import com.codefrog.dioritbajrami.einkaufsappkotlin.R
+import com.codefrog.dioritbajrami.einkaufsappkotlin.RecyclerItemTouchHelper
 
-class IT_Fragment : Fragment() {
+class IT_Fragment : Fragment()  {
 
     var recyclerView: RecyclerView?=null
 
@@ -38,5 +40,6 @@ class IT_Fragment : Fragment() {
 
         return view
     }
+
 
 }

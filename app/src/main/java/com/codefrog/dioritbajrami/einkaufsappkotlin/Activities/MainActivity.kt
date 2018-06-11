@@ -3,18 +3,20 @@ package com.codefrog.dioritbajrami.einkaufsappkotlin.Activities
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EinkaufsItemAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.MenuLoginFragments.LoginFragment
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.MenuLoginFragments.MenuFragment
 import com.codefrog.dioritbajrami.einkaufsappkotlin.R
+import com.codefrog.dioritbajrami.einkaufsappkotlin.RecyclerItemTouchHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
 
 class MainActivity : AppCompatActivity() {
-
     val auth = FirebaseAuth.getInstance()!!
 
     var fragmentManager = supportFragmentManager
