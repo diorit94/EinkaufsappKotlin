@@ -1,19 +1,28 @@
 package com.codefrog.dioritbajrami.einkaufsappkotlin.Activities
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EinkaufsItemAdapter
+import com.codefrog.dioritbajrami.einkaufsappkotlin.FirebaseClient
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.MenuLoginFragments.LoginFragment
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.MenuLoginFragments.MenuFragment
 import com.codefrog.dioritbajrami.einkaufsappkotlin.R
 import com.codefrog.dioritbajrami.einkaufsappkotlin.RecyclerItemTouchHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import android.net.NetworkInfo
+import android.content.Context.CONNECTIVITY_SERVICE
+import android.content.DialogInterface
+import android.net.ConnectivityManager
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -77,7 +86,32 @@ class MainActivity : AppCompatActivity() {
         } else if(choosenIntent == 2){
             var intent = Intent(this, EinkaufStarten::class.java)
             startActivity(intent)
+        } else if(choosenIntent == 3){
+            val i = Intent(this, com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.EhemaligeEinkaeufe::class.java)
+            startActivity(i)
+        } else if(choosenIntent == 4){
+            val i = Intent(this, Empfehlung_activity::class.java)
+            startActivity(i)
         }
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        var network = isNetworkAvailable()
+        if(!network){
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Kein Internet oder es besteht ein Netzwerk Problem. Bitte Internet anmachen und auf OK drücken. ")
+            builder.setPositiveButton("Ok", DialogInterface.OnClickListener { dialog, id ->
+                recreate()
+            })
+            builder.show()        }
+    }
+
+    fun isNetworkAvailable():Boolean{
+        val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetworkInfo = connectivityManager.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected
     }
 
 }

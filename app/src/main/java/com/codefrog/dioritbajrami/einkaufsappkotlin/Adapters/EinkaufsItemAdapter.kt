@@ -52,11 +52,10 @@ class EinkaufsItemAdapter(val context: Context,val einkaufsArray: ArrayList<EInk
         holder.artikelButton.setOnClickListener {
                 if ((context).mAuth!!.currentUser!!.uid == einkaufsItem.userID) {
                     firebaseClient.deleteFirebase("Artikel",einkaufsItem.firebaseID)
-
+                    removeItem(position)
                 } else if((context).mAuth!!.currentUser!!.uid == "eIeqKuxSsxZekufpxEy4jmik8DA3"){
                     firebaseClient.deleteFirebase("Artikel",einkaufsItem.firebaseID)
-                    notifyItemRemoved(position)
-
+                    removeItem(position)
                 } else {
                     Toast.makeText(context, "Kannst es nicht löschen da du es selber nicht hinzugefügt hast", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
@@ -66,6 +65,11 @@ class EinkaufsItemAdapter(val context: Context,val einkaufsArray: ArrayList<EInk
         }
 
 
+    }
+
+    fun removeItem(position: Int){
+        einkaufsArray.removeAt(position)
+        notifyItemRemoved(position)
     }
 
 

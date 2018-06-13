@@ -3,6 +3,7 @@ package com.codefrog.dioritbajrami.einkaufsappkotlin
 import android.app.Dialog
 import android.content.Context
 import android.widget.*
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.LoggedIn
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.add_alert_dialog.*
@@ -63,6 +64,7 @@ class Alerts(val context: Context){
             }
 
             fireClient.checkIfEmpfehlungExists(name.text.toString())
+
         }
 
         d.show()

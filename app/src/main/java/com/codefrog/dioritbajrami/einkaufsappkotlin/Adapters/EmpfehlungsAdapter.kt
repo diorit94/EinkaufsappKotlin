@@ -35,4 +35,9 @@ class EmpfehlungsAdapter(val empfehlungsArray: ArrayList<Empfehlungen>) : Recycl
         val viewBackground = itemView.findViewById(R.id.view_background) as RelativeLayout
 
     }
+
+    fun removeItem(position: Int){
+        empfehlungsArray.removeAt(position)
+        notifyItemRemoved(position)
+    }
 }

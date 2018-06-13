@@ -44,7 +44,7 @@ class MenuFragment : Fragment() {
         menuArray.add(MenuItem("Einkaufsliste", R.mipmap.ic_add_shopping_cart_white_24dp))
         menuArray.add(MenuItem("Artikel Hinzu", R.mipmap.ic_playlist_add_white_24dp))
         menuArray.add(MenuItem("Einkauf Starten", R.mipmap.ic_shopping_cart_white_24dp))
-        menuArray.add(MenuItem("Einkauf abschließen", R.mipmap.baseline_outlined_flag_white_24))
+        menuArray.add(MenuItem("Ehemalige Einkäufe", R.mipmap.ic_calendar_check_white_24dp))
         menuArray.add(MenuItem("Empfehlungen", R.mipmap.ic_account_box_white_24dp))
     }
 

@@ -7,16 +7,15 @@ import android.widget.BaseAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EmpfehlungsAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EInkaufsItem
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.Empfehlungen
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import android.content.DialogInterface
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EinkaufsItemAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EhemaligeEinkaufItemAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EhemaligeEinkaeufe
+import com.google.firebase.database.*
 
 
 class FirebaseClient {
@@ -162,7 +161,6 @@ class FirebaseClient {
                         }
 
 
-
                         if (cons == false) {
                             shopAdapter!!.notifyDataSetChanged()
                         } else if (cons == true) {
@@ -301,7 +299,9 @@ class FirebaseClient {
     }
 
     fun getEhemaligeEinkaeufe(einkaufsArrayShop: ArrayList<EhemaligeEinkaeufe>) {
-        firRef.child("Ehemalige Einkaeufe").addValueEventListener(object : ValueEventListener {
+        val query : Query = firRef.child("Ehemalige Einkaeufe")
+
+        query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
 
@@ -315,8 +315,6 @@ class FirebaseClient {
 
                 for (key in td.keys) {
                     val post = td[key] as HashMap<String, Any>
-
-
 
                     einkaufsArrayShop.add(EhemaligeEinkaeufe(
                             post["date"] as String,

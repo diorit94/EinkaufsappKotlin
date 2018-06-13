@@ -16,9 +16,13 @@ class EhemaligeEinkaeufe : AppCompatActivity() {
     var itemListFragment = ehemaligItemFragment()
     var einkaufListeFragment = EhemaligeEinkaufsListe()
 
+    var titleString = "Ehemaligen Einkäufe"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ehemalige_einkaeufe)
+
+        title = titleString
 
         fragmentTransaction.add(R.id.ehemalige_einkaeufe_frame, einkaufListeFragment)
         fragmentTransaction.commit()
@@ -36,6 +40,7 @@ class EhemaligeEinkaeufe : AppCompatActivity() {
         if(fragmentManager.backStackEntryCount>0){
             val fm = getSupportFragmentManager()
             fm.popBackStack()
+            title = titleString
         }else {
             super.onBackPressed()
         }

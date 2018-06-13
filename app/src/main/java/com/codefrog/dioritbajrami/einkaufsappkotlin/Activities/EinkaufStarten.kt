@@ -8,8 +8,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ListView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EinkaufStartenAdapter
+import com.codefrog.dioritbajrami.einkaufsappkotlin.CircularReveal
 import com.codefrog.dioritbajrami.einkaufsappkotlin.FirebaseClient
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EInkaufsItem
 import com.codefrog.dioritbajrami.einkaufsappkotlin.R
@@ -56,6 +58,24 @@ class EinkaufStarten : AppCompatActivity() {
             builder.show()
 
 
+
         }
+
+
+        var relativeLayout = findViewById<RelativeLayout>(R.id.layoutCG)
+        var contentLayout = findViewById<RelativeLayout>(R.id.layoutC)
+        var layoutMain = findViewById<RelativeLayout>(R.id.layoutM)
+
+        val startTimer = Timer()
+        startTimer.schedule(object : TimerTask() {
+            override fun run() {
+                runOnUiThread {
+                    if(einkaufArray.size == 0){
+                        var cr = CircularReveal()
+                        cr.getCircularReveal(relativeLayout, layoutMain,contentLayout)
+                    }
+                }
+            }
+        }, 500)
     }
 }

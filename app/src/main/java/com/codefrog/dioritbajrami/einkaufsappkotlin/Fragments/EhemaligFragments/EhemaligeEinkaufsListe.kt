@@ -27,13 +27,15 @@ class EhemaligeEinkaufsListe : Fragment() {
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_ehemalige_einkaufs_liste, container, false)
 
-        adapter = EhemaligeEinkaeufeAdapter(activity!!,arrayList)
+        adapter = EhemaligeEinkaeufeAdapter((activity as Context?)!!,arrayList)
         listView = view.findViewById(R.id.ehemalige_einkaeufe_ListViewID)
 
         listView!!.adapter = adapter
 
         var fClient = FirebaseClient(adapter!!)
         fClient.getEhemaligeEinkaeufe(arrayList)
+
+        listView!!.divider = null
 
         return view
     }

@@ -18,6 +18,7 @@ class Empfehlung_activity : AppCompatActivity(), RecyclerItemTouchHelper.Recycle
 
     var recyclerView: RecyclerView?=null
     var empfehlungsArray = ArrayList<Empfehlungen>()
+    var adapter: EmpfehlungsAdapter?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,13 +29,13 @@ class Empfehlung_activity : AppCompatActivity(), RecyclerItemTouchHelper.Recycle
         recyclerView!!.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
 
 
-        val adapter = EmpfehlungsAdapter(empfehlungsArray)
+        adapter = EmpfehlungsAdapter(empfehlungsArray)
         recyclerView!!.adapter = adapter
 
         val itemTouchHelperCallback = RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this)
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView)
 
-        var firebaseClient = FirebaseClient(empfehlungsArray, adapter)
+        var firebaseClient = FirebaseClient(empfehlungsArray, adapter!!)
         firebaseClient.getFirebaseEmpfehlungen()
 
     }
@@ -52,6 +53,8 @@ class Empfehlung_activity : AppCompatActivity(), RecyclerItemTouchHelper.Recycle
         if (viewHolder is EmpfehlungsAdapter.ViewHolder){
             var key : String = empfehlungsArray.get(viewHolder.adapterPosition).firebaseID
             firebaseClient.deleteFirebase("Empfehlung", key)
+
+            adapter!!.removeItem(viewHolder.getAdapterPosition())
         }
     }
 

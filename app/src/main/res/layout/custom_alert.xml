@@ -42,6 +42,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Anmelden"
-        android:textAllCaps="false"/>
+        android:background="@drawable/ripple_effect"
+        android:textAllCaps="false"
+        android:textColor="@color/white"/>
 
 </LinearLayout>

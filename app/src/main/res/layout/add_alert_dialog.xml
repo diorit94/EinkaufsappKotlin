@@ -94,6 +94,8 @@
                 android:layout_marginTop="40dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:text="@string/Bestellen"
+                android:background="@drawable/ripple_effect"
+                android:textColor="@color/white"
                 />
 
 </LinearLayout>

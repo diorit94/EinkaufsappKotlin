@@ -18,7 +18,7 @@
             android:layout_width="94dip"
             android:layout_height="94dip"
             android:src="@mipmap/ic_add_shopping_cart_white_24dp"
-            app:cb_color="#99CC00"
+            app:cb_color="@color/colorPrimary"
             app:cb_pressedRingWidth="8dip"
             android:layout_gravity="center"/>
     </FrameLayout>
@@ -28,6 +28,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TEST"
-        android:typeface="monospace" />
+         />
 
 </LinearLayout>

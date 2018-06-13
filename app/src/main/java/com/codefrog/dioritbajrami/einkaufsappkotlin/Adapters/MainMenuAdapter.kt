@@ -1,19 +1,24 @@
 package com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Toast
 import com.codefrog.dioritbajrami.einkaufsappkotlin.*
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.Empfehlung_activity
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.LoggedIn
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.MainActivity
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EInkaufsItem
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EhemaligeEinkaeufe
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.MenuItem
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.Logger
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.main_list_row.view.*
 import java.text.SimpleDateFormat
@@ -34,6 +39,19 @@ class MainMenuAdapter(var context: Context, var menuArray: ArrayList<MenuItem>) 
         itemView.tittleRowID.text = item.name
         itemView.circleButtonId.setImageResource(item.image)
 
+        var adminUID = "eIeqKuxSsxZekufpxEy4jmik8DA3"
+        var currentUserUID = (context as MainActivity).mAuth!!.currentUser!!.uid
+
+        if(position == 2){
+            if(currentUserUID != adminUID){
+                itemView.circleButtonId.setColor(Color.GRAY)
+            }
+        } else if(position == 4){
+            if(currentUserUID != adminUID){
+                itemView.circleButtonId.setColor(Color.GRAY)
+            }
+        }
+
         itemView.circleButtonId.setOnClickListener {
 
             if (context is MainActivity) {
@@ -44,16 +62,20 @@ class MainMenuAdapter(var context: Context, var menuArray: ArrayList<MenuItem>) 
                     val alerts = Alerts(context)
                     alerts.startAlert()
                 } else if (position == 2) {
-                    (context as MainActivity).changeIntent(2)
+                    if(currentUserUID == adminUID){
+                        (context as MainActivity).changeIntent(2)
+                    }else {
+                        Toast.makeText(context, "Du hast leider keine Administrator Rechte", Toast.LENGTH_SHORT).show()
+                    }
                 } else if (position == 3) {
-                    val i = Intent(context, com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.EhemaligeEinkaeufe::class.java)
-                    context.startActivity(i)
+                    (context as MainActivity).changeIntent(3)
                 } else if (position == 4) {
-                    val i = Intent(context, Empfehlung_activity::class.java)
-                    context.startActivity(i)
-                }
+                    if(currentUserUID == adminUID){
+                        (context as MainActivity).changeIntent(4)
+                    }else {
+                        Toast.makeText(context, "Du hast leider keine Administrator Rechte", Toast.LENGTH_SHORT).show()
+                    }                }
             }
-
         }
 
         return itemView
