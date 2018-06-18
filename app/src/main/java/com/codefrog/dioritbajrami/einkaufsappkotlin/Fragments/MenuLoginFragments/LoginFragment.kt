@@ -20,6 +20,7 @@ import com.google.android.gms.common.SignInButton
 import com.google.firebase.auth.FirebaseAuth
 import java.util.*
 import android.app.Dialog
+import android.app.ProgressDialog
 import kotlinx.android.synthetic.main.custom_alert.*
 
 
@@ -31,6 +32,8 @@ class LoginFragment : Fragment() {
     var adminSignInButton: Button?=null
 
     var mAuth: FirebaseAuth?=null
+
+    var mProgress: ProgressDialog?=null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_login, container, false)
@@ -50,6 +53,12 @@ class LoginFragment : Fragment() {
         }
 
 
+        mProgress = ProgressDialog(context);
+        mProgress!!.setTitle("Anmeldung...");
+        mProgress!!.setMessage("Bitte warten")
+        mProgress!!.setCancelable(false);
+        mProgress!!.setIndeterminate(true);
+
         return view
     }
 
@@ -64,6 +73,7 @@ class LoginFragment : Fragment() {
                         .setPrivacyPolicyUrl("link to app privacy policy")
                         .build(),
                 RC_SIGN_IN)
+        mProgress!!.show()
     }
 
 
@@ -80,31 +90,20 @@ class LoginFragment : Fragment() {
                 /*
                     Checks if the User sign in was successful
                  */
-
-
                 replaceFragment()
+                mProgress!!.dismiss()
+                Toast.makeText(context!!, "Willkommen " + mAuth!!.currentUser!!.displayName, Toast.LENGTH_LONG).show()
 
                 return
             }
             else {
-                if(response == null){
-                    //If no response from the Server
-                    Toast.makeText(context!!, "No Response from server", Toast.LENGTH_SHORT).show()
-                    return
-                }
-                if(response.errorCode == ErrorCodes.NO_NETWORK){
-                    //If there was a network problem the user's phone
-                    Toast.makeText(context!!, "Network Problem", Toast.LENGTH_SHORT).show()
-                    return
-                }
-                if(response.errorCode == ErrorCodes.UNKNOWN_ERROR){
-                    //If the error cause was unknown
-                    Toast.makeText(context!!, "Unknown Error", Toast.LENGTH_SHORT).show()
-                    return
-                }
+                mProgress!!.dismiss()
+                Toast.makeText(context!!, "Anmeldung Fehlgeschlagen", Toast.LENGTH_LONG).show()
+
+                return
             }
         }
-        Toast.makeText(context!!, "Sign In Response Unknown", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context!!, "Anmeldeantwort unbekannt", Toast.LENGTH_SHORT).show()
     }
 
     fun loginAdministrator(email:String, password:String){
@@ -113,8 +112,10 @@ class LoginFragment : Fragment() {
                     if(task.isSuccessful){
                         //saveImage()
                         replaceFragment()
+                        mProgress!!.dismiss()
                     } else {
                         Toast.makeText(activity, "Passwort oder Email falsch", Toast.LENGTH_SHORT).show()
+                        mProgress!!.dismiss()
                     }
                 }
     }
@@ -132,6 +133,7 @@ class LoginFragment : Fragment() {
                 Toast.makeText(activity, "Passwort eingeben!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }else {
+                mProgress!!.show()
                 loginAdministrator(d.usernameID.text.toString(), d.passwortID.text.toString())
                 d.dismiss()
             }

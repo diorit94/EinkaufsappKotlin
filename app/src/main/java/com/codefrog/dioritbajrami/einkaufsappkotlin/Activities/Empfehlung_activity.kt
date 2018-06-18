@@ -25,11 +25,10 @@ class Empfehlung_activity : AppCompatActivity(), RecyclerItemTouchHelper.Recycle
         setContentView(R.layout.activity_empfehlung_activity)
 
         recyclerView = findViewById(R.id.empgehlungListViewID)
-
         recyclerView!!.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
 
 
-        adapter = EmpfehlungsAdapter(empfehlungsArray)
+        adapter = EmpfehlungsAdapter(empfehlungsArray, this)
         recyclerView!!.adapter = adapter
 
         val itemTouchHelperCallback = RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this)

@@ -9,9 +9,8 @@ import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EInkaufsItem
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.Empfehlungen
 import android.content.DialogInterface
 import android.util.Log
-import android.view.View
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.RelativeLayout
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.LoggedIn
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EinkaufsItemAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EhemaligeEinkaufItemAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EhemaligeEinkaeufe
@@ -31,6 +30,7 @@ class FirebaseClient {
     var shopAdapter: BaseAdapter? = null
 
     var cons: Boolean? = null
+
 
     constructor(artikelArray: ArrayList<EInkaufsItem>, arrayAdapter: EinkaufsItemAdapter) {
         this.artikelArray = artikelArray
@@ -113,10 +113,6 @@ class FirebaseClient {
 
     }
 
-    fun saveEmpfehlung(title: String) {
-        val key = firRef.push().key
-        firRef.child("Empfehlung").child(key).setValue(Empfehlungen(title, key))
-    }
 
     //Load data from Firebase
     fun getFirebaseData(verwaltung: String) {
@@ -133,7 +129,7 @@ class FirebaseClient {
 
 
                         val td = dataSnapshot.value as HashMap<String, Any>
-                        var counterTrue:Boolean ?=null
+                        var counterTrue: Boolean? = null
 
                         for (key in td.keys) {
 
@@ -149,6 +145,7 @@ class FirebaseClient {
                                         post["firebaseID"] as String,
                                         post["userID"] as String,
                                         post["bought"] as Boolean))
+
                             } else if (verwaltung == "All") {
                                 artikelArray.add(EInkaufsItem(
                                         post["name"] as String,
@@ -175,6 +172,10 @@ class FirebaseClient {
     }
 
 
+    fun saveEmpfehlung(title: String) {
+        val key = firRef.push().key
+        firRef.child("Empfehlung").child(key).setValue(Empfehlungen(title, key, 1))
+    }
 
     fun getFirebaseEmpfehlungen() {
         firRef.child("Empfehlung").addValueEventListener(object : ValueEventListener {
@@ -192,10 +193,17 @@ class FirebaseClient {
                 for (key in td.keys) {
                     val empfehlung = td[key] as HashMap<String, Any>
 
-                    empfehlungArray.add(Empfehlungen(
-                            empfehlung["name"] as String,
-                            empfehlung["firebaseID"] as String
-                    ))
+
+                    val counter = empfehlung["counter"] as Long
+
+                    if (counter >= 3) {
+                        empfehlungArray.add(Empfehlungen(
+                                empfehlung["name"] as String,
+                                empfehlung["firebaseID"] as String,
+                                empfehlung["counter"] as Long
+                        ))
+                    }
+
 
                 }
                 empfehlungsAdapter!!.notifyDataSetChanged()
@@ -222,7 +230,12 @@ class FirebaseClient {
 
                 for (key in td.keys) {
                     val empfehlung = td[key] as HashMap<String, Any>
-                    adapter.add(empfehlung["name"] as String)
+                    var counter = empfehlung["counter"] as Long
+
+                    if (counter >= 3) {
+                        adapter.add(empfehlung["name"] as String)
+                    }
+
                 }
 
             }
@@ -240,6 +253,11 @@ class FirebaseClient {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 if (!dataSnapshot!!.exists()) {
                     saveEmpfehlung(title)
+                } else {
+                    for (fireDataSnapshot in dataSnapshot!!.children) {
+                        var counter = fireDataSnapshot.child("counter").getValue(Long::class.java)
+                        fireDataSnapshot.ref.child("counter").setValue(counter!!.plus(1))
+                    }
                 }
             }
 
@@ -254,7 +272,7 @@ class FirebaseClient {
         firRef.child("Artikel").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                var einkaufsArrayShop = HashMap<String,EInkaufsItem>()
+                var einkaufsArrayShop = HashMap<String, EInkaufsItem>()
                 einkaufsArrayShop.clear()
 
                 if (!dataSnapshot.exists()) {
@@ -267,26 +285,17 @@ class FirebaseClient {
                     val post = td[key] as HashMap<String, Any>
                     var key = firRef.push().key
 
-                    einkaufsArrayShop.put(key,EInkaufsItem(
+                    einkaufsArrayShop.put(key, EInkaufsItem(
                             post["name"] as String,
                             post["anzahl"] as Long,
                             post["verwaltung"] as String,
                             post["firebaseID"] as String,
                             post["userID"] as String,
                             post["bought"] as Boolean))
-
-                    /*einkaufsArrayShop.add(EInkaufsItem(
-                            post["name"] as String,
-                            post["anzahl"] as Long,
-                            post["verwaltung"] as String,
-                            post["firebaseID"] as String,
-                            post["userID"] as String,
-                            post["bought"] as Boolean))*/
                 }
-                //SAVE THE DATA TO EHEMALIGE EINKAEUFE
 
                 var childKey = firRef.push().key
-                firRef.child("Ehemalige Einkaeufe").child(childKey).setValue(EhemaligeEinkaeufe(currentDate,childKey,einkaufsArrayShop))
+                firRef.child("Ehemalige Einkaeufe").child(childKey).setValue(EhemaligeEinkaeufe(currentDate, childKey, einkaufsArrayShop))
 
                 //THEN REMOVE THE DATA FROM THE ARTICEL
                 firRef.child("Artikel").removeValue()
@@ -299,7 +308,7 @@ class FirebaseClient {
     }
 
     fun getEhemaligeEinkaeufe(einkaufsArrayShop: ArrayList<EhemaligeEinkaeufe>) {
-        val query : Query = firRef.child("Ehemalige Einkaeufe")
+        val query: Query = firRef.child("Ehemalige Einkaeufe")
 
         query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -329,7 +338,7 @@ class FirebaseClient {
         })
     }
 
-    fun loadEhemaligItemData(key: String, arrayItemList: ArrayList<EInkaufsItem>, adapter: EhemaligeEinkaufItemAdapter){
+    fun loadEhemaligItemData(key: String, arrayItemList: ArrayList<EInkaufsItem>, adapter: EhemaligeEinkaufItemAdapter) {
         firRef.child("Ehemalige Einkaeufe").child(key).child("einkaufsMap").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -346,12 +355,12 @@ class FirebaseClient {
                     val post = td[key] as HashMap<String, Any>
 
                     arrayItemList.add(EInkaufsItem(
-                                post["name"] as String,
-                                post["anzahl"] as Long,
-                                post["verwaltung"] as String,
-                                post["firebaseID"] as String,
-                                post["userID"] as String,
-                                post["bought"] as Boolean))
+                            post["name"] as String,
+                            post["anzahl"] as Long,
+                            post["verwaltung"] as String,
+                            post["firebaseID"] as String,
+                            post["userID"] as String,
+                            post["bought"] as Boolean))
                 }
                 adapter.notifyDataSetChanged()
             }
@@ -362,12 +371,12 @@ class FirebaseClient {
         })
     }
 
-    fun deleteFirebase(mainBranch: String, key: String){
+    fun deleteFirebase(mainBranch: String, key: String) {
         val query = firRef.child(mainBranch).orderByChild("firebaseID").equalTo(key)
 
-        query.addListenerForSingleValueEvent(object : ValueEventListener{
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                for(firesnapshot in dataSnapshot!!.children){
+                for (firesnapshot in dataSnapshot!!.children) {
                     firesnapshot.ref.removeValue()
                 }
             }

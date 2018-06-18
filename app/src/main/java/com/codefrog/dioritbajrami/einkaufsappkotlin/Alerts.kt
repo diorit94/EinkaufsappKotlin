@@ -2,6 +2,7 @@ package com.codefrog.dioritbajrami.einkaufsappkotlin
 
 import android.app.Dialog
 import android.content.Context
+import android.view.View
 import android.widget.*
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.LoggedIn
 import com.google.firebase.auth.FirebaseAuth
@@ -14,7 +15,7 @@ class Alerts(val context: Context){
 
     var database = FirebaseDatabase.getInstance()
 
-    fun startAlert() {
+    fun startAlert(editText: String) {
         val fireClient = FirebaseClient(context)
 
         val adapter = ArrayAdapter<String>(context,R.layout.support_simple_spinner_dropdown_item)
@@ -24,9 +25,8 @@ class Alerts(val context: Context){
         d.setTitle("Einkaufen")
         d.setContentView(R.layout.add_alert_dialog)
 
-        val name = d.findViewById<AutoCompleteTextView>(R.id.nameEditText)
+        var name = d.findViewById<AutoCompleteTextView>(R.id.nameEditText)
         val ammount = d.findViewById<EditText>(R.id.ammountEditText)
-
         name.setAdapter(adapter)
 
         val radio_person_btn = d.findViewById<RadioButton>(R.id.radio_person)
@@ -38,6 +38,8 @@ class Alerts(val context: Context){
                 personName.visibility = View.GONE
             }
         })*/
+
+        name.setText(editText)
 
         d.saveBtn.setOnClickListener {
 

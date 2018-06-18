@@ -62,7 +62,7 @@ class EinkaufStarten : AppCompatActivity() {
         }
 
 
-        var relativeLayout = findViewById<RelativeLayout>(R.id.layoutCG)
+        /*var relativeLayout = findViewById<RelativeLayout>(R.id.layoutCG)
         var contentLayout = findViewById<RelativeLayout>(R.id.layoutC)
         var layoutMain = findViewById<RelativeLayout>(R.id.layoutM)
 
@@ -76,6 +76,6 @@ class EinkaufStarten : AppCompatActivity() {
                     }
                 }
             }
-        }, 500)
+        }, 500)*/
     }
 }

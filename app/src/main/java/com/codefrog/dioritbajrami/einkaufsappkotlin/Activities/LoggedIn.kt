@@ -1,6 +1,7 @@
 package com.codefrog.dioritbajrami.einkaufsappkotlin.Activities
 
 import android.animation.Animator
+import android.app.Activity
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -12,20 +13,25 @@ import android.util.Log
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.widget.RelativeLayout
+import android.widget.Toast
+import com.codefrog.dioritbajrami.einkaufsappkotlin.*
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.CostompagerAdapter
-import com.codefrog.dioritbajrami.einkaufsappkotlin.Alerts
-import com.codefrog.dioritbajrami.einkaufsappkotlin.FirebaseClient
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.MainFragments.IT_Fragment
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.MainFragments.Person_Fragment
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.MainFragments.Verwaltung_Fragment
-import com.codefrog.dioritbajrami.einkaufsappkotlin.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_logged_in.*
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EinkaufsItemAdapter
-import com.codefrog.dioritbajrami.einkaufsappkotlin.CircularReveal
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EInkaufsItem
+import com.codefrog.dioritbajrami.einkaufsappkotlin.R
 import java.util.*
+import android.content.ComponentName
+import android.content.Context.ACTIVITY_SERVICE
+import android.app.ActivityManager
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
 
 
 class LoggedIn : AppCompatActivity() {
@@ -36,11 +42,16 @@ class LoggedIn : AppCompatActivity() {
     var pagerAdapter: CostompagerAdapter? = null
     var addItem: FloatingActionButton? = null
 
+    var isNetwork: Boolean?=null
 
     var adapter: EinkaufsItemAdapter? = null
 
     var resultArray = ArrayList<EInkaufsItem>()
     var firebaseClient = FirebaseClient(resultArray)
+
+    var relativeLayout: RelativeLayout?=null
+    var contentLayout: RelativeLayout?=null
+    var layoutMain: RelativeLayout?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -48,9 +59,9 @@ class LoggedIn : AppCompatActivity() {
         setContentView(R.layout.activity_logged_in)
 
         //contentLayout = findViewById(R.id.contentLayoutID)
-        var layoutMain = findViewById<RelativeLayout>(R.id.lyoutMain)
-        var contentLayout = findViewById<RelativeLayout>(R.id.layoutContent)
-        var relativeLayout = findViewById<RelativeLayout>(R.id.circularBackGroundAnimationID)
+        layoutMain = findViewById<RelativeLayout>(R.id.lyoutMain)
+        contentLayout = findViewById<RelativeLayout>(R.id.layoutContent)
+        relativeLayout = findViewById<RelativeLayout>(R.id.circularBackGroundAnimationID)
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -58,28 +69,46 @@ class LoggedIn : AppCompatActivity() {
 
         addItem!!.setOnClickListener {
             val alerts = Alerts(this)
-            alerts.startAlert()
+            alerts.startAlert("")
             relativeLayout!!.visibility = View.GONE
         }
 
         addFragments()
 
-        firebaseClient.getFirebaseData("All")
+        checkIfItEgzists()
+    }
 
+    //If it is empty start the Thread for the Animation
+    fun startThread(){
+        isNetwork = InternetConnection(this).isNetworkAvailable()
 
         val startTimer = Timer()
         startTimer.schedule(object : TimerTask() {
             override fun run() {
                 runOnUiThread {
-                    if (resultArray.size == 0) {
                         //viewMenu()
-                        var cr = CircularReveal()
-                        cr.getCircularReveal(relativeLayout, contentLayout,layoutMain)
-                    }
+                        if(isNetwork!!){
+                            var cr = CircularReveal()
+                            cr.getCircularReveal(relativeLayout!!, contentLayout!!, layoutMain!!)
+                        }
                 }
             }
-        }, 500)
+        }, 200)
+    }
 
+    //Check if the Database for Artikel is empty.
+    fun checkIfItEgzists(){
+        firRef.child("Artikel")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if(!dataSnapshot.exists()){
+                            startThread()
+                        }
+                    }
+
+                    override fun onCancelled(p0: DatabaseError?) {
+                    }
+                })
     }
 
     fun addFragments() {
@@ -112,18 +141,19 @@ class LoggedIn : AppCompatActivity() {
     }
 
 
-    /*fun viewMenu() {
-        val x = layoutContent!!.right
-        val y = layoutContent!!.bottom
+    override fun onStart() {
 
-        var startRadius: Int = 0
-        var endRadius: Int = Math.hypot(layoutMain!!.width.toDouble(), layoutMain!!.height.toDouble()).toInt()
+        super.onStart()
+        var isNetwork = InternetConnection(this).isNetworkAvailable()
 
-        var anim: Animator = ViewAnimationUtils.createCircularReveal(relativeLayout, x, y, startRadius.toFloat(), endRadius.toFloat())
-
-        relativeLayout!!.visibility = View.VISIBLE
-        anim.duration = 1000
-        anim.start()
-    }*/
+        if (!isNetwork!!) {
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Kein Internet oder es besteht ein Netzwerk Problem. Bitte Internet anmachen und auf OK drücken. ")
+            builder.setPositiveButton("Ok", DialogInterface.OnClickListener { dialog, id ->
+                recreate()
+            })
+            builder.show()
+        }
+    }
 
 }

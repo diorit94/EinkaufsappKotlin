@@ -5,7 +5,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.view.menu.MenuAdapter
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.*
+import android.widget.LinearLayout
 import android.widget.ListView
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.MainMenuAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.MenuItem
@@ -21,19 +24,18 @@ class MenuFragment : Fragment() {
 
     var menuAdapter: MainMenuAdapter?=null
 
-    var menuListView: ListView?=null
+    var menuListView: RecyclerView?=null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_menu, container, false)
 
         menuArray.clear()
 
-
         menuAdapter = MainMenuAdapter(context!!, menuArray)
+        menuListView = view.findViewById(R.id.menuRecyclerView)
 
-        menuListView = view.findViewById(R.id.menuListView)
+        menuListView!!.layoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
         menuListView!!.adapter = menuAdapter
-        menuListView!!.divider = null
 
         getMenuItems()
 
@@ -43,9 +45,9 @@ class MenuFragment : Fragment() {
     fun getMenuItems(){
         menuArray.add(MenuItem("Einkaufsliste", R.mipmap.ic_add_shopping_cart_white_24dp))
         menuArray.add(MenuItem("Artikel Hinzu", R.mipmap.ic_playlist_add_white_24dp))
+        menuArray.add(MenuItem("Wunschliste", R.mipmap.outline_star_border_white_24))
         menuArray.add(MenuItem("Einkauf Starten", R.mipmap.ic_shopping_cart_white_24dp))
         menuArray.add(MenuItem("Ehemalige Einkäufe", R.mipmap.ic_calendar_check_white_24dp))
-        menuArray.add(MenuItem("Empfehlungen", R.mipmap.ic_account_box_white_24dp))
     }
 
 }

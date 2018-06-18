@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Activities.EinkaufStarten">
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:id="@+id/layoutM"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -14,47 +14,52 @@
         <RelativeLayout
             android:id="@+id/layoutC"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">-->
+
+    <ListView
+        android:id="@+id/einkaufStartenID"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:drawSelectorOnTop="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/buttonEinkaufAbschliessenID"
+        />
+
+    <Button
+        android:id="@+id/buttonEinkaufAbschliessenID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/einkauf_abschliessen_button_background"
+        android:clickable="true"
+        android:text="Einkauf Abschliessen"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!--</android.support.constraint.ConstraintLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutCG"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/TransparentcolorPrimary"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/circletitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
+            android:layout_marginLeft="20dp"
+            android:text="Der Einkaufskorb is leer"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
-            <ListView
-                android:id="@+id/einkaufStartenID"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawSelectorOnTop="true"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <Button
-                android:id="@+id/buttonEinkaufAbschliessenID"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/einkauf_abschliessen_button_background"
-                android:clickable="true"
-                android:text="Einkauf Abschliessen"
-                android:textColor="@color/white"
-                />
-
-            <RelativeLayout
-                android:id="@+id/layoutCG"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/TransparentcolorPrimary"
-                android:gravity="center"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/circletitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:text="Der Einkaufskorb is leer"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
-
-            </RelativeLayout>
-        </RelativeLayout>
     </RelativeLayout>
+</RelativeLayout>
+</RelativeLayout>-->
 
 </android.support.constraint.ConstraintLayout>
