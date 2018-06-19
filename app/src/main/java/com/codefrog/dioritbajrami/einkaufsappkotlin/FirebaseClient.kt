@@ -129,7 +129,6 @@ class FirebaseClient {
 
 
                         val td = dataSnapshot.value as HashMap<String, Any>
-                        var counterTrue: Boolean? = null
 
                         for (key in td.keys) {
 
@@ -172,9 +171,9 @@ class FirebaseClient {
     }
 
 
-    fun saveEmpfehlung(title: String) {
+    fun saveEmpfehlung(title: String, counter: Long) {
         val key = firRef.push().key
-        firRef.child("Empfehlung").child(key).setValue(Empfehlungen(title, key, 1))
+        firRef.child("Empfehlung").child(key).setValue(Empfehlungen(title, key, counter))
     }
 
     fun getFirebaseEmpfehlungen() {
@@ -252,7 +251,7 @@ class FirebaseClient {
 
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 if (!dataSnapshot!!.exists()) {
-                    saveEmpfehlung(title)
+                    saveEmpfehlung(title, 1)
                 } else {
                     for (fireDataSnapshot in dataSnapshot!!.children) {
                         var counter = fireDataSnapshot.child("counter").getValue(Long::class.java)

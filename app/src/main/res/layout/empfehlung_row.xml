@@ -50,8 +50,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorPrimary"
+        android:layout_height="0.3dp"
+        android:background="@color/TransparentcolorPrimary"
         android:layout_gravity="bottom"
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"/>

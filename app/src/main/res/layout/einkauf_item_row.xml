@@ -1,31 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="8dp">
 
-    <TextView
-        android:id="@+id/artikelNameID"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/linearID"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Artikel Name" />
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@id/deleteArtikelID"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <TextView
-        android:id="@+id/artikelZahlID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Artikel Anzahl"
-        app:layout_constraintTop_toBottomOf="@+id/artikelNameID" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
 
-    <TextView
-        android:id="@+id/verwaltungID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="IT/Verwaltung"
-        app:layout_constraintTop_toBottomOf="@+id/artikelZahlID" />
+            <TextView
+                android:id="@+id/artikelZahlID"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:text="1"
+                android:textColor="@color/white"
+                android:layout_marginRight="2pt"
+                android:background="@drawable/circle_view"
+                android:gravity="center"/>
 
+            <TextView
+                android:id="@+id/artikelNameID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Artikel Name"
+                android:textSize="18sp"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/verwaltungID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="IT/Verwaltung"
+            android:textColor="@color/TransparentcolorPrimary"
+            android:textStyle="bold"
+            />
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/deleteArtikelID"
@@ -39,5 +64,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/TransparentcolorPrimary"
+        app:layout_constraintTop_toBottomOf="@+id/linearID"
+        android:layout_marginTop="5dp"/>
 
 </android.support.constraint.ConstraintLayout>

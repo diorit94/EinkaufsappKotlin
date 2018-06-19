@@ -44,5 +44,4 @@ class IT_Fragment : Fragment()  {
         return view
     }
 
-
 }

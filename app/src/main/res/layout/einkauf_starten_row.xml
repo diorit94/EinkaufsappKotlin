@@ -22,12 +22,15 @@
             >
 
             <TextView
+                android:background="@drawable/circle_view"
                 android:id="@+id/anzahlStartID"
                 android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:text="2"
-                android:textStyle="bold"/>
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:gravity="center"/>
 
             <TextView
                 android:id="@+id/titleStartID"
@@ -41,7 +44,10 @@
             android:id="@+id/verwaltungStartID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PERSONI SHET" />
+            android:text="PERSONI SHET"
+            android:textColor="@color/TransparentcolorPrimary"
+            android:textSize="12sp"/>
+
     </LinearLayout>
 
 

@@ -2,6 +2,8 @@ package com.codefrog.dioritbajrami.einkaufsappkotlin.Activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.CoordinatorLayout
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.LinearLayout
@@ -20,9 +22,13 @@ class Empfehlung_activity : AppCompatActivity(), RecyclerItemTouchHelper.Recycle
     var empfehlungsArray = ArrayList<Empfehlungen>()
     var adapter: EmpfehlungsAdapter?=null
 
+    var cordinatorLayout: CoordinatorLayout?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_empfehlung_activity)
+
+        cordinatorLayout = findViewById(R.id.cordinatorLayoutEmpfehlungen)
 
         recyclerView = findViewById(R.id.empgehlungListViewID)
         recyclerView!!.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
@@ -37,6 +43,7 @@ class Empfehlung_activity : AppCompatActivity(), RecyclerItemTouchHelper.Recycle
         var firebaseClient = FirebaseClient(empfehlungsArray, adapter!!)
         firebaseClient.getFirebaseEmpfehlungen()
 
+
     }
 
     /*fun getData(){
@@ -50,11 +57,28 @@ class Empfehlung_activity : AppCompatActivity(), RecyclerItemTouchHelper.Recycle
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int, position: Int) {
         val firebaseClient = FirebaseClient()
         if (viewHolder is EmpfehlungsAdapter.ViewHolder){
+            var name = empfehlungsArray.get(viewHolder.adapterPosition).name
+            var counter : Long= empfehlungsArray.get(viewHolder.adapterPosition).counter
+
             var key : String = empfehlungsArray.get(viewHolder.adapterPosition).firebaseID
             firebaseClient.deleteFirebase("Empfehlung", key)
 
             adapter!!.removeItem(viewHolder.getAdapterPosition())
+
+            showSnackBar(name, counter)
+
         }
+    }
+
+    fun showSnackBar(name: String, counter: Long) {
+        val snackBar = Snackbar
+                .make(cordinatorLayout!!, "$name wurde gelöscht!", Snackbar.LENGTH_LONG)
+                .setAction("Rückgängig machen") {
+                    var fClienT = FirebaseClient()
+                    fClienT.saveEmpfehlung(name, counter)
+                }
+
+        snackBar.show()
     }
 
 }
