@@ -8,12 +8,18 @@ import com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.LoggedIn
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.add_alert_dialog.*
+import android.widget.ArrayAdapter
+
+
 
 class Alerts(val context: Context){
 
     var mAuth = FirebaseAuth.getInstance()
 
     var database = FirebaseDatabase.getInstance()
+
+    //Dropt down list Items
+    var dropDownArray = arrayOf("Stück","Kiste","Packung", "Beutel","Schachtel", "Palette")
 
     fun startAlert(editText: String) {
         val fireClient = FirebaseClient(context)
@@ -30,6 +36,12 @@ class Alerts(val context: Context){
         name.setAdapter(adapter)
 
         val radio_person_btn = d.findViewById<RadioButton>(R.id.radio_person)
+
+        val spinner = d.findViewById<Spinner>(R.id.spinner)
+
+        val gameKindArray = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, dropDownArray)
+        gameKindArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.adapter = gameKindArray
 
         /*radio_person_btn.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, b ->
             if (radio_person_btn.isChecked()) {
@@ -50,20 +62,25 @@ class Alerts(val context: Context){
 
             if (!radio_itbtn.isChecked() && !radio_verwaltung_btn.isChecked() && !radio_person_btn.isChecked() || name.getText().toString().isEmpty() || ammount.getText().toString().isEmpty()){
                 Toast.makeText(context, "Bitte alle Felder füllen!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            } else if(ammount.text.toString() == "0"){
+                Toast.makeText(context, "Die zahl kann nicht 0 sein", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
             else if(radio_itbtn.isChecked){
-                fireClient.saveFirebaseData(name.text.toString(),ammount.text.toString().toLong(), currentUserID, "IT")
+                fireClient.saveFirebaseData(name.text.toString(),ammount.text.toString().toLong(), currentUserID, "IT", spinner.selectedItem.toString())
                 d.dismiss()
             }
             else if(radio_verwaltung_btn.isChecked){
-                fireClient.saveFirebaseData(name.text.toString(),ammount.text.toString().toLong(), currentUserID, "Verwaltung")
+                fireClient.saveFirebaseData(name.text.toString(),ammount.text.toString().toLong(), currentUserID, "Verwaltung", spinner.selectedItem.toString())
                 d.dismiss()
             }
             else if(radio_person_btn.isChecked){
                 val usermAuth = FirebaseAuth.getInstance().currentUser!!.displayName
-                fireClient.saveFirebaseData(name.text.toString(),ammount.text.toString().toLong(), currentUserID, "(Person)$usermAuth")
+                fireClient.saveFirebaseData(name.text.toString(),ammount.text.toString().toLong(), currentUserID, "(Person)$usermAuth", spinner.selectedItem.toString())
                 d.dismiss()
             }
+
 
             fireClient.checkIfEmpfehlungExists(name.text.toString())
 

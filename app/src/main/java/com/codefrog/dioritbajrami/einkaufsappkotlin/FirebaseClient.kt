@@ -10,6 +10,7 @@ import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.Empfehlungen
 import android.content.DialogInterface
 import android.util.Log
 import android.widget.RelativeLayout
+import android.widget.Toast
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.LoggedIn
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EinkaufsItemAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EhemaligeEinkaufItemAdapter
@@ -70,11 +71,11 @@ class FirebaseClient {
         this.context = context
     }
 
-    fun saveFirebaseData(title: String, anzahl: Long, userID: String, verwalter: String) {
+    fun saveFirebaseData(title: String, anzahl: Long, userID: String, verwalter: String, type: String) {
         val key = firRef.push().key
 
         if (verwalter.contains("Person")) {
-            firRef.child("Artikel").child(key).setValue(EInkaufsItem(title, anzahl, verwalter, key, userID, false))
+            firRef.child("Artikel").child(key).setValue(EInkaufsItem(title, anzahl, verwalter, key, userID, false,type))
             return
         }
         firRef.child("Artikel").orderByChild("name").equalTo(title).addListenerForSingleValueEvent(object : ValueEventListener {
@@ -88,10 +89,16 @@ class FirebaseClient {
 
                     if (fireDataSnapshot.exists() && verwaltung == verwalter) {
                         val builder = AlertDialog.Builder(context)
-                        builder.setMessage("Es existiert bereits $zahl $title auf der $verwalter liste, noch $anzahl hinzufügen?")
+                        builder.setMessage("Es existiert bereits " +  zahl +"x $title auf der Liste für die $verwalter, noch $anzahl hinzufügen?")
                         builder.setPositiveButton("Ja", DialogInterface.OnClickListener { dialog, id ->
+
                             val beforeammount = fireDataSnapshot.child("anzahl").getValue(Int::class.java)!!
-                            fireDataSnapshot.ref.child("anzahl").setValue(beforeammount + anzahl)
+                            if(beforeammount + anzahl > 99){
+                                Toast.makeText(context, "Die anzahl darf nicht mehr als 99 sein", Toast.LENGTH_LONG).show()
+                            }else {
+                                fireDataSnapshot.ref.child("anzahl").setValue(beforeammount + anzahl)
+                            }
+
                         })
                         builder.setNegativeButton("Nein", DialogInterface.OnClickListener { dialog, id ->
                             // User cancelled the dialog
@@ -101,7 +108,7 @@ class FirebaseClient {
                         return
                     }
                 }
-                firRef.child("Artikel").child(key).setValue(EInkaufsItem(title, anzahl, verwalter, key, userID, false))
+                firRef.child("Artikel").child(key).setValue(EInkaufsItem(title, anzahl, verwalter, key, userID, false, type))
             }
 
 
@@ -143,7 +150,8 @@ class FirebaseClient {
                                         post["verwaltung"] as String,
                                         post["firebaseID"] as String,
                                         post["userID"] as String,
-                                        post["bought"] as Boolean))
+                                        post["bought"] as Boolean,
+                                        post["type"] as String))
 
                             } else if (verwaltung == "All") {
                                 artikelArray.add(EInkaufsItem(
@@ -152,7 +160,8 @@ class FirebaseClient {
                                         post["verwaltung"] as String,
                                         post["firebaseID"] as String,
                                         post["userID"] as String,
-                                        post["bought"] as Boolean))
+                                        post["bought"] as Boolean,
+                                        post["type"] as String))
                             }
                         }
 
@@ -290,7 +299,8 @@ class FirebaseClient {
                             post["verwaltung"] as String,
                             post["firebaseID"] as String,
                             post["userID"] as String,
-                            post["bought"] as Boolean))
+                            post["bought"] as Boolean,
+                            post["type"] as String))
                 }
 
                 var childKey = firRef.push().key
@@ -359,7 +369,8 @@ class FirebaseClient {
                             post["verwaltung"] as String,
                             post["firebaseID"] as String,
                             post["userID"] as String,
-                            post["bought"] as Boolean))
+                            post["bought"] as Boolean,
+                            post["type"] as String))
                 }
                 adapter.notifyDataSetChanged()
             }

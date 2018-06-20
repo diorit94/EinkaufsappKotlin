@@ -12,17 +12,18 @@ import com.codefrog.dioritbajrami.einkaufsappkotlin.FirebaseClient
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.Empfehlungen
 import com.codefrog.dioritbajrami.einkaufsappkotlin.R
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.widget.Toast
 import com.codefrog.dioritbajrami.einkaufsappkotlin.RecyclerItemTouchHelper
-
+import com.google.firebase.auth.FirebaseAuth
 
 
 class Empfehlung_activity : AppCompatActivity(), RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
-    var recyclerView: RecyclerView?=null
+    var recyclerView: RecyclerView? = null
     var empfehlungsArray = ArrayList<Empfehlungen>()
-    var adapter: EmpfehlungsAdapter?=null
-
-    var cordinatorLayout: CoordinatorLayout?=null
+    var adapter: EmpfehlungsAdapter? = null
+    var mAuth: FirebaseAuth? = null
+    var cordinatorLayout: CoordinatorLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +44,7 @@ class Empfehlung_activity : AppCompatActivity(), RecyclerItemTouchHelper.Recycle
         var firebaseClient = FirebaseClient(empfehlungsArray, adapter!!)
         firebaseClient.getFirebaseEmpfehlungen()
 
+        mAuth = FirebaseAuth.getInstance()
 
     }
 
@@ -56,18 +58,24 @@ class Empfehlung_activity : AppCompatActivity(), RecyclerItemTouchHelper.Recycle
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int, position: Int) {
         val firebaseClient = FirebaseClient()
-        if (viewHolder is EmpfehlungsAdapter.ViewHolder){
+
+        if (viewHolder is EmpfehlungsAdapter.ViewHolder) {
             var name = empfehlungsArray.get(viewHolder.adapterPosition).name
-            var counter : Long= empfehlungsArray.get(viewHolder.adapterPosition).counter
+            var counter: Long = empfehlungsArray.get(viewHolder.adapterPosition).counter
 
-            var key : String = empfehlungsArray.get(viewHolder.adapterPosition).firebaseID
-            firebaseClient.deleteFirebase("Empfehlung", key)
+            var key: String = empfehlungsArray.get(viewHolder.adapterPosition).firebaseID
 
-            adapter!!.removeItem(viewHolder.getAdapterPosition())
+            if (mAuth!!.currentUser!!.uid != "eIeqKuxSsxZekufpxEy4jmik8DA3") {
+                Toast.makeText(this, "Nur der Administrator kan Artikel aus dieser Liste löschen.", Toast.LENGTH_LONG).show()
+            } else {
+                firebaseClient.deleteFirebase("Empfehlung", key)
+                adapter!!.removeItem(viewHolder.getAdapterPosition())
+                showSnackBar(name, counter)
 
-            showSnackBar(name, counter)
+            }
 
         }
+
     }
 
     fun showSnackBar(name: String, counter: Long) {

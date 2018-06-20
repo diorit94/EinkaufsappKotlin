@@ -17,7 +17,7 @@
             android:id="@+id/usernameID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"
+            android:hint="@string/username"
             android:singleLine="true"
             />
     </android.support.design.widget.TextInputLayout>
@@ -34,7 +34,7 @@
             android:id="@+id/passwortID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/passwort"
             android:inputType="textPassword"/>
     </android.support.design.widget.TextInputLayout>
     <Button

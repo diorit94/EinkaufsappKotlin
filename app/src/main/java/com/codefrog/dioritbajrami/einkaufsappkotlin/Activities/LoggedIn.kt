@@ -32,6 +32,8 @@ import android.app.ActivityManager
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.support.design.widget.TabLayout
+import android.support.v7.widget.RecyclerView
 
 
 class LoggedIn : AppCompatActivity() {
@@ -42,16 +44,16 @@ class LoggedIn : AppCompatActivity() {
     var pagerAdapter: CostompagerAdapter? = null
     var addItem: FloatingActionButton? = null
 
-    var isNetwork: Boolean?=null
+    var isNetwork: Boolean? = null
 
     var adapter: EinkaufsItemAdapter? = null
 
     var resultArray = ArrayList<EInkaufsItem>()
     var firebaseClient = FirebaseClient(resultArray)
 
-    var relativeLayout: RelativeLayout?=null
-    var contentLayout: RelativeLayout?=null
-    var layoutMain: RelativeLayout?=null
+    var relativeLayout: RelativeLayout? = null
+    var contentLayout: RelativeLayout? = null
+    var layoutMain: RelativeLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -79,29 +81,29 @@ class LoggedIn : AppCompatActivity() {
     }
 
     //If it is empty start the Thread for the Animation
-    fun startThread(){
+    fun startThread() {
         isNetwork = InternetConnection(this).isNetworkAvailable()
 
         val startTimer = Timer()
         startTimer.schedule(object : TimerTask() {
             override fun run() {
                 runOnUiThread {
-                        //viewMenu()
-                        if(isNetwork!!){
-                            var cr = CircularReveal()
-                            cr.getCircularReveal(relativeLayout!!, contentLayout!!, layoutMain!!)
-                        }
+                    //viewMenu()
+                    if (isNetwork!!) {
+                        var cr = CircularReveal()
+                        cr.getCircularReveal(relativeLayout!!, contentLayout!!, layoutMain!!)
+                    }
                 }
             }
         }, 200)
     }
 
     //Check if the Database for Artikel is empty.
-    fun checkIfItEgzists(){
+    fun checkIfItEgzists() {
         firRef.child("Artikel")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        if(!dataSnapshot.exists()){
+                        if (!dataSnapshot.exists()) {
                             startThread()
                         }
                     }
@@ -121,6 +123,18 @@ class LoggedIn : AppCompatActivity() {
         costomViewPager!!.adapter = pagerAdapter
         //Now setting up viewpager with tablayout
         costomTabLayout.setupWithViewPager(costomViewPager)
+        costomTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                addItem!!.show()
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+            }
+
+        })
     }
 
     override fun onBackPressed() {
@@ -129,12 +143,12 @@ class LoggedIn : AppCompatActivity() {
     }
 
 
-    fun showSnackBar(title: String, anzahl: Long, userID: String, verwalter: String) {
+    fun showSnackBar(title: String, anzahl: Long, userID: String, verwalter: String, type: String) {
         val snackBar = Snackbar
                 .make(layoutContent!!, "$title wurde gelöscht!", Snackbar.LENGTH_LONG)
                 .setAction("Rückgängig machen") {
                     val fireClient = FirebaseClient()
-                    fireClient.saveFirebaseData(title, anzahl, userID, verwalter)
+                    fireClient.saveFirebaseData(title, anzahl, userID, verwalter, type)
                 }
 
         snackBar.show()
@@ -154,6 +168,27 @@ class LoggedIn : AppCompatActivity() {
             })
             builder.show()
         }
+    }
+
+
+    //Hide floating button if you scroll on the bottom
+    fun hideFloatingButton(recycler: RecyclerView) {
+        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            //Show if you are not in the bottom
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                if (dy < 0)
+                    addItem!!.show()
+            }
+
+            //Hide if you reach the bottom
+            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView!!.canScrollVertically(1)) {
+                    addItem!!.hide()
+                }
+            }
+        })
     }
 
 }

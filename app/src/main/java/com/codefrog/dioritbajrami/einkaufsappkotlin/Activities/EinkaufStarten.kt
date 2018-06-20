@@ -45,7 +45,7 @@ class EinkaufStarten : AppCompatActivity() {
             val builder = AlertDialog.Builder(this)
             builder.setMessage("Einkauf Abschliessen?")
             builder.setPositiveButton("Ja", DialogInterface.OnClickListener { dialog, id ->
-                val sdf = SimpleDateFormat("d/M/yyyy")
+                val sdf = SimpleDateFormat("dd.MM.yyyy")
                 val currentDate = sdf.format(Date())
 
                 val fireClient = FirebaseClient()
@@ -56,8 +56,6 @@ class EinkaufStarten : AppCompatActivity() {
                 // User cancelled the dialog
             })
             builder.show()
-
-
 
         }
 

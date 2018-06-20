@@ -12,6 +12,17 @@ import com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.LoggedIn
 import com.codefrog.dioritbajrami.einkaufsappkotlin.FirebaseClient
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EInkaufsItem
 import com.codefrog.dioritbajrami.einkaufsappkotlin.R
+import android.text.SpannableStringBuilder
+import android.text.Spannable
+import android.icu.lang.UProperty.INT_START
+import android.text.style.RelativeSizeSpan
+import android.text.SpannableString
+
+
+
+
+
+
 
 class EinkaufsItemAdapter(val context: Context,val einkaufsArray: ArrayList<EInkaufsItem>) : RecyclerView.Adapter<EinkaufsItemAdapter.ViewHolder>(){
 
@@ -28,8 +39,13 @@ class EinkaufsItemAdapter(val context: Context,val einkaufsArray: ArrayList<EInk
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         val einkaufsItem = einkaufsArray[position]
 
-        holder!!.artikelName.text = einkaufsItem.name
-        holder.artikelZahl.text = einkaufsItem.anzahl.toString()
+
+        val ss1 = SpannableString(einkaufsItem.Type)
+        ss1.setSpan(RelativeSizeSpan(2f), 0, ss1.length, 0)
+
+        holder!!.artikelName.text = einkaufsItem.name + ", " + ss1
+
+        holder.artikelZahl.text = einkaufsItem.anzahl.toString() + "x"
 
         if(einkaufsItem.verwaltung == "Verwaltung"){
             holder.artikelVerwaltung.text = "Verwaltung"
@@ -61,7 +77,7 @@ class EinkaufsItemAdapter(val context: Context,val einkaufsArray: ArrayList<EInk
                     return@setOnClickListener
                 }
                 //SHOW THE SNACKBAR TO RETURN DELETION
-                (context).showSnackBar(einkaufsItem.name,einkaufsItem.anzahl, einkaufsItem.userID,einkaufsItem.verwaltung)
+                (context).showSnackBar(einkaufsItem.name,einkaufsItem.anzahl, einkaufsItem.userID,einkaufsItem.verwaltung, einkaufsItem.Type)
         }
 
 

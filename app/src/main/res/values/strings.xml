@@ -10,6 +10,12 @@
     <string name="artikel_name">Artikelname</string>
     <string name="artikelzahl">Artikelzahl</string>
     <string name="Bestellen">Bestellen</string>
-    <string name="Administrator">Als Administrator Anmelden</string>
+    <string name="Administrator">Als Administrator anmelden</string>
+
+    <string name="Einkaufskorb_leer">Der Einkaufskorb ist leer</string>
+
+    <string name="username">Benutzername</string>
+    <string name="passwort">Passwort</string>
+
 
 </resources>

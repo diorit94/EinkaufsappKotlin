@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Toast
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.LoggedIn
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EinkaufsItemAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.FirebaseClient
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EInkaufsItem
@@ -40,6 +41,8 @@ class IT_Fragment : Fragment()  {
         val firebaseClient = FirebaseClient(itemArray,itemAdapter!!)
         firebaseClient.getFirebaseData("IT")
         //firebaseClient.refreshData()
+
+        (activity as LoggedIn).hideFloatingButton(recyclerView!!)
 
         return view
     }

@@ -19,9 +19,15 @@ class EhemaligeEinkaufItemAdapter(var context: Context, var einkaufsArray: Array
         val inflator = context!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         view = inflator.inflate(R.layout.ehemalige_einkaufs_item_row, null)
 
-        view.anzahlID.text = einkaufsItem.anzahl.toString()
-        view.ehemalige_text_id.text = einkaufsItem.name
+        view.anzahlID.text = einkaufsItem.anzahl.toString() + "x"
+        view.ehemalige_text_id.text =  einkaufsItem.name
         view.ehemalig_verwaltung_id.text = einkaufsItem.verwaltung
+
+        if(!einkaufsItem.bought){
+            view.boughtPicID.setImageResource(R.drawable.x)
+        } else {
+            view.boughtPicID.setImageResource(R.drawable.tick)
+        }
 
         return view
     }

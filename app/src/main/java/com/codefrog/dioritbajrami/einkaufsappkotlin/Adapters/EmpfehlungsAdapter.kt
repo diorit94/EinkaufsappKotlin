@@ -32,6 +32,7 @@ class EmpfehlungsAdapter(val empfehlungsArray: ArrayList<Empfehlungen>, var cont
         holder.itemView.setOnClickListener {
             alerts.startAlert(empfehlung.name)
         }
+
     }
 
 

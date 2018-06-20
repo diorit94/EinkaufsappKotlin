@@ -27,22 +27,37 @@
     </android.support.design.widget.TextInputLayout>
 
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/ammountLayout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/artikelzahl"
-        android.support.design:hintAnimationEnabled="true"
-        android.support.design:hintEnabled="true">
+        android:orientation="horizontal"
+        android:gravity="center">
 
-        <EditText
-            android:id="@+id/ammountEditText"
-            android:layout_width="match_parent"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/ammountLayout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:maxLength="2" />
-    </android.support.design.widget.TextInputLayout>
+            android:hint="@string/artikelzahl"
+            android.support.design:hintAnimationEnabled="true"
+            android.support.design:hintEnabled="true"
+            android:layout_weight="1">
 
+            <EditText
+                android:id="@+id/ammountEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="2" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"/>
+
+    </LinearLayout>
     <!--<android.support.design.widget.TextInputLayout
         android:id="@+id/verwalterLayout"
         android:layout_width="match_parent"
@@ -58,7 +73,8 @@
     <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
 
 
         <RadioButton
