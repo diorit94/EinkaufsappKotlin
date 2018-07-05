@@ -91,6 +91,9 @@ class MainActivity : AppCompatActivity() {
         } else if (choosenIntent == 4) {
             val i = Intent(this, Empfehlung_activity::class.java)
             startActivity(i)
+        } else if (choosenIntent == 5) {
+            val i = Intent(this, EventsListActivity::class.java)
+            startActivity(i)
         }
     }
 

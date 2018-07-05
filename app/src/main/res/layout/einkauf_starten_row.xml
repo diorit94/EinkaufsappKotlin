@@ -8,12 +8,13 @@
     android:background="@drawable/ripple_effect_row">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/checkBoxStartID">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -22,21 +23,22 @@
             >
 
             <TextView
-                android:background="@drawable/circle_view"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
                 android:id="@+id/anzahlStartID"
-                android:layout_marginRight="5dp"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:text="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12"
                 android:textColor="@color/white"
-                android:textStyle="bold"
-                android:gravity="center"/>
+                android:layout_marginRight="2pt"
+                android:background="@drawable/circle_view"
+                android:gravity="center" />
 
             <TextView
                 android:id="@+id/titleStartID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TEXTI I PRODUKTIT" />
+                android:text="TEXTI I " />
 
         </LinearLayout>
 

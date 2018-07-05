@@ -16,12 +16,13 @@ class EhemaligeEinkaeufe : AppCompatActivity() {
     var itemListFragment = ehemaligItemFragment()
     var einkaufListeFragment = EhemaligeEinkaufsListe()
 
-    var titleString = "Ehemaligen Einkäufe"
+    var titleString : String ?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ehemalige_einkaeufe)
 
+        titleString = this.getString(R.string.Ehemalige_Einkaufe)
         title = titleString
 
         fragmentTransaction.add(R.id.ehemalige_einkaeufe_frame, einkaufListeFragment)

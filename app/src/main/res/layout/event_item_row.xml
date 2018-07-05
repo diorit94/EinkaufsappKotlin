@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardViewID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="@drawable/ripple_transparent_effect"
+        app:cardCornerRadius="4dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="4dp"
+                app:layout_constraintEnd_toStartOf="@id/imageViewID"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/event_name_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="EMRI I EVeENTIT"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/event_date_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="DATA E EVENTIT"
+                    android:textColor="@color/white"
+                    app:layout_constraintTop_toBottomOf="@+id/event_name_id" />
+
+                <TextView
+                    android:id="@+id/event_time_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="DATA E EVENTIT"
+                    android:textColor="@color/white"
+                    app:layout_constraintTop_toBottomOf="@+id/event_date_id" />
+
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageViewID"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+</android.support.constraint.ConstraintLayout>

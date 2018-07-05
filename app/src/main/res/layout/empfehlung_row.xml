@@ -35,8 +35,9 @@
         android:id="@+id/view_foreground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:padding="10dp">
+        android:background="@drawable/ripple_green_effect"
+        android:padding="10dp"
+        >
 
         <TextView
             android:id="@+id/empfehlungTextID"

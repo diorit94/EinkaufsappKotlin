@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.EventsListActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbarID"
+        android:layout_width="match_parent"
+        android:theme="@style/AppTheme"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimary"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerEventList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarID" />
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/floatingactionmenuID"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|right"
+        android:paddingBottom="8dp"
+        android:paddingRight="8dp"
+        app:fab_showShadow="true"
+        app:menu_openDirection="up"
+        app:menu_labels_textColor="@color/fabColorText"
+        app:menu_labels_colorNormal="@color/fabColorBackground"
+        app:menu_colorNormal="@color/colorPrimaryDark"
+        app:menu_colorPressed="#cce57f"
+        app:menu_labels_colorPressed="#e5e5e5"
+        app:backgroundTint="#2196F3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:menu_backgroundColor="#99000000"
+        >
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/andereEventID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_size="mini"
+            app:fab_label="Andere"
+            android:src="@drawable/ic_bookmark_border_black_24dp"
+            app:fab_colorNormal="#f4c20d"
+            app:fab_colorPressed="#f9e086"
+            />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/essenEventID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_size="mini"
+            app:fab_label="Essen"
+            android:src="@drawable/ic_local_dining_black_24dp"
+            app:fab_colorNormal="#db3236"
+            app:fab_colorPressed="#ed989a"
+            />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/geburtstagEventID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_size="mini"
+            app:fab_label="Geburtstag"
+            android:src="@drawable/ic_cake_black_24dp"
+            app:fab_colorNormal="#4885ed"
+            app:fab_colorPressed="#7ea9f2"
+            />
+
+    </com.github.clans.fab.FloatingActionMenu>
+
+
+</android.support.constraint.ConstraintLayout>

@@ -8,14 +8,30 @@
     <string name="Person">Person</string>
 
     <string name="artikel_name">Artikelname</string>
-    <string name="artikelzahl">Artikelzahl</string>
+    <string name="artikelzahl">Artikelanzahl</string>
     <string name="Bestellen">Bestellen</string>
     <string name="Administrator">Als Administrator anmelden</string>
 
-    <string name="Einkaufskorb_leer">Der Einkaufskorb ist leer</string>
+    <string name="Einkaufskorb_leer">Der Einkaufskorb ist leer.</string>
 
     <string name="username">Benutzername</string>
     <string name="passwort">Passwort</string>
 
+    <string name="anzahl99">Die Anzahl darf nicht größer als 99 sein.</string>
+    <string name="internet_network_problem">Kein Internet oder es besteht ein Netzwerk Problem. Bitte Internet anmachen und auf OK drücken.</string>
+    <string name="nicht_alles_gekauft">Es befinden sich nicht alle Artikel im Warenkorb. Einkauf trotzdem abschliessen?</string>
+
+
+    <string name="Einkaufsliste">Einkaufsliste</string>
+    <string name="Artikel_hinzu">Artikel hinzu</string>
+    <string name="Wuntschliste">Wunschliste</string>
+    <string name="Einkauf_starten">Einkauf starten</string>
+    <string name="Ehemalige_Einkaufe">Ehemalige Einkäufe</string>
+    <string name="Events">Events</string>
+
+    <string name="event_artikel_name">Was bringst du mit?</string>
+    <string name="event_artikelzahl">Wie viel?</string>
+
+    <string name="admin_id">eIeqKuxSsxZekufpxEy4jmik8DA3</string>
 
 </resources>

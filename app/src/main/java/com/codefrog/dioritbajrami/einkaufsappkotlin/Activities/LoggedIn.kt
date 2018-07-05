@@ -33,7 +33,9 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.support.design.widget.TabLayout
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import kotlin.collections.ArrayList
 
 
 class LoggedIn : AppCompatActivity() {
@@ -49,7 +51,6 @@ class LoggedIn : AppCompatActivity() {
     var adapter: EinkaufsItemAdapter? = null
 
     var resultArray = ArrayList<EInkaufsItem>()
-    var firebaseClient = FirebaseClient(resultArray)
 
     var relativeLayout: RelativeLayout? = null
     var contentLayout: RelativeLayout? = null
@@ -61,9 +62,9 @@ class LoggedIn : AppCompatActivity() {
         setContentView(R.layout.activity_logged_in)
 
         //contentLayout = findViewById(R.id.contentLayoutID)
-        layoutMain = findViewById<RelativeLayout>(R.id.lyoutMain)
-        contentLayout = findViewById<RelativeLayout>(R.id.layoutContent)
-        relativeLayout = findViewById<RelativeLayout>(R.id.circularBackGroundAnimationID)
+        layoutMain = findViewById(R.id.lyoutMain)
+        contentLayout = findViewById(R.id.layoutContent)
+        relativeLayout = findViewById(R.id.circularBackGroundAnimationID)
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -145,7 +146,7 @@ class LoggedIn : AppCompatActivity() {
 
     fun showSnackBar(title: String, anzahl: Long, userID: String, verwalter: String, type: String) {
         val snackBar = Snackbar
-                .make(layoutContent!!, "$title wurde gelöscht!", Snackbar.LENGTH_LONG)
+                .make(layoutContent!!, "$title,$anzahl wurde gelöscht!", Snackbar.LENGTH_LONG)
                 .setAction("Rückgängig machen") {
                     val fireClient = FirebaseClient()
                     fireClient.saveFirebaseData(title, anzahl, userID, verwalter, type)
@@ -162,7 +163,7 @@ class LoggedIn : AppCompatActivity() {
 
         if (!isNetwork!!) {
             val builder = AlertDialog.Builder(this)
-            builder.setMessage("Kein Internet oder es besteht ein Netzwerk Problem. Bitte Internet anmachen und auf OK drücken. ")
+            builder.setMessage(R.string.internet_network_problem)
             builder.setPositiveButton("Ok", DialogInterface.OnClickListener { dialog, id ->
                 recreate()
             })
@@ -172,23 +173,11 @@ class LoggedIn : AppCompatActivity() {
 
 
     //Hide floating button if you scroll on the bottom
-    fun hideFloatingButton(recycler: RecyclerView) {
+    fun hideFloatingButton(recycler: RecyclerView, layoutManager: LinearLayoutManager) {
         recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
-            //Show if you are not in the bottom
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                if (dy < 0)
-                    addItem!!.show()
-            }
-
-            //Hide if you reach the bottom
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView!!.canScrollVertically(1)) {
-                    addItem!!.hide()
-                }
-            }
         })
     }
+
 
 }

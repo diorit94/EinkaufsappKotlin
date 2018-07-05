@@ -9,7 +9,6 @@ import android.support.v4.view.PagerAdapter
 
 class CostompagerAdapter(fm:FragmentManager):FragmentPagerAdapter(fm) {
 
-
     var mFm = fm
     var mFragmentItems:ArrayList<Fragment> = ArrayList()
     var mFragmentTitles:ArrayList<String> = ArrayList()

@@ -74,6 +74,8 @@ class MainMenuAdapter(var context: Context, var menuArray: ArrayList<MenuItem>) 
                     (context as MainActivity).changeIntent(3)
                 } else if (position == 2) {
                     (context as MainActivity).changeIntent(4)
+                } else if (position == 5) {
+                    (context as MainActivity).changeIntent(5)
                 }
             }
         }

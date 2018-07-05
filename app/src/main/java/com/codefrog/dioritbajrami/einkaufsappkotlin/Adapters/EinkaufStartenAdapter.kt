@@ -24,8 +24,8 @@ class EinkaufStartenAdapter(var context: Context, var einkaufStartenList: ArrayL
         val inflator = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         itemView = inflator.inflate(R.layout.einkauf_starten_row, null)
 
-        itemView.anzahlStartID.text = einkaufItem.anzahl.toString()
-        itemView.titleStartID.text = einkaufItem.name
+        itemView.anzahlStartID.text = einkaufItem.anzahl.toString() + "x"
+        itemView.titleStartID.text = einkaufItem.name + ", " + einkaufItem.Type
         itemView.verwaltungStartID.text = einkaufItem.verwaltung
 
         if(einkaufItem.bought == true){
@@ -36,16 +36,15 @@ class EinkaufStartenAdapter(var context: Context, var einkaufStartenList: ArrayL
         }
 
         itemView.setOnClickListener {
-            checkBoxhChange(einkaufItem.bought, einkaufItem.firebaseID)
+            checkBoxhChange(einkaufItem.bought!!, einkaufItem.firebaseID!!)
         }
 
         itemView.checkBoxStartID.setOnClickListener {
-            checkBoxhChange(einkaufItem.bought, einkaufItem.firebaseID)
+            checkBoxhChange(einkaufItem.bought!!, einkaufItem.firebaseID!!)
         }
 
         return itemView
     }
-    var firebaseClient = FirebaseClient()
 
     fun checkBoxhChange(bought: Boolean, id: String){
         if(bought == false){

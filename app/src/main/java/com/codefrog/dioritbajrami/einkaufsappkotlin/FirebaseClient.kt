@@ -2,26 +2,27 @@ package com.codefrog.dioritbajrami.einkaufsappkotlin
 
 import android.app.AlertDialog
 import android.content.Context
-import android.widget.ArrayAdapter
-import android.widget.BaseAdapter
-import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EmpfehlungsAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EInkaufsItem
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.Empfehlungen
 import android.content.DialogInterface
 import android.util.Log
-import android.widget.RelativeLayout
-import android.widget.Toast
+import android.view.View
+import android.widget.*
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.EinkaufStarten
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.LoggedIn
-import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EinkaufsItemAdapter
-import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.EhemaligeEinkaufItemAdapter
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.*
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EhemaligeEinkaeufe
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EventModel
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class FirebaseClient {
 
     var database = FirebaseDatabase.getInstance()
-    var firRef = database.reference
+    var firRef = database.reference.ref
 
     var artikelArray = ArrayList<EInkaufsItem>()
 
@@ -31,7 +32,7 @@ class FirebaseClient {
     var shopAdapter: BaseAdapter? = null
 
     var cons: Boolean? = null
-
+    var mAuth = FirebaseAuth.getInstance()
 
     constructor(artikelArray: ArrayList<EInkaufsItem>, arrayAdapter: EinkaufsItemAdapter) {
         this.artikelArray = artikelArray
@@ -75,7 +76,46 @@ class FirebaseClient {
         val key = firRef.push().key
 
         if (verwalter.contains("Person")) {
-            firRef.child("Artikel").child(key).setValue(EInkaufsItem(title, anzahl, verwalter, key, userID, false,type))
+
+            firRef.child("Artikel").orderByChild("name").equalTo(title).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                    for (firesnapshot in dataSnapshot!!.children) {
+
+                        val userid = firesnapshot.child("userID").getValue(String::class.java)!!
+                        val beforeammount = firesnapshot.child("anzahl").getValue(Int::class.java)!!
+                        val verwaltung = firesnapshot.child("verwaltung").getValue(String::class.java)
+                        val einheit = firesnapshot.child("type").getValue(String::class.java)
+
+                        if (einheit == type) {
+                            if (firesnapshot.exists() && userid == userID && verwaltung == verwalter) {
+                                val builder = AlertDialog.Builder(context)
+                                builder.setMessage("Es existiert bereits " + beforeammount + "x $title auf der Liste für die $verwalter, noch $anzahl hinzufügen?")
+                                builder.setPositiveButton("Ja", DialogInterface.OnClickListener { dialog, id ->
+
+                                    var actualAmmount = beforeammount + anzahl
+                                    if (actualAmmount + anzahl > 99) {
+                                        Toast.makeText(context, R.string.anzahl99, Toast.LENGTH_LONG).show()
+                                    } else {
+                                        firesnapshot.ref.child("anzahl").setValue(beforeammount + anzahl)
+                                    }
+
+                                })
+                                builder.setNegativeButton("Nein", DialogInterface.OnClickListener { dialog, id ->
+                                    // User cancelled the dialog
+                                })
+                                builder.show()
+                                return
+                            }
+                        }
+                    }
+                    firRef.child("Artikel").child(key).setValue(EInkaufsItem(title, anzahl, verwalter, key, userID, false, type))
+
+                }
+
+                override fun onCancelled(p0: DatabaseError?) {
+
+                }
+            })
             return
         }
         firRef.child("Artikel").orderByChild("name").equalTo(title).addListenerForSingleValueEvent(object : ValueEventListener {
@@ -86,26 +126,33 @@ class FirebaseClient {
 
                     val verwaltung = fireDataSnapshot.child("verwaltung").getValue(String::class.java)
                     val zahl = fireDataSnapshot.child("anzahl").getValue(Int::class.java)!!
+                    val einheit = fireDataSnapshot.child("type").getValue(String::class.java)
 
-                    if (fireDataSnapshot.exists() && verwaltung == verwalter) {
-                        val builder = AlertDialog.Builder(context)
-                        builder.setMessage("Es existiert bereits " +  zahl +"x $title auf der Liste für die $verwalter, noch $anzahl hinzufügen?")
-                        builder.setPositiveButton("Ja", DialogInterface.OnClickListener { dialog, id ->
+                    if (einheit == type) {
+                        if (fireDataSnapshot.exists() && verwaltung == verwalter) {
+                            val builder = AlertDialog.Builder(context)
+                            builder.setMessage("Es existiert bereits " + zahl + "x $title,$type auf der Liste für die $verwalter, noch $anzahl hinzufügen?")
+                            builder.setPositiveButton("Ja", DialogInterface.OnClickListener { dialog, id ->
 
-                            val beforeammount = fireDataSnapshot.child("anzahl").getValue(Int::class.java)!!
-                            if(beforeammount + anzahl > 99){
-                                Toast.makeText(context, "Die anzahl darf nicht mehr als 99 sein", Toast.LENGTH_LONG).show()
-                            }else {
-                                fireDataSnapshot.ref.child("anzahl").setValue(beforeammount + anzahl)
-                            }
+                                val beforeammount = fireDataSnapshot.child("anzahl").getValue(Int::class.java)!!
+                                val userUID = fireDataSnapshot.child("userID").getValue(String::class.java)
 
-                        })
-                        builder.setNegativeButton("Nein", DialogInterface.OnClickListener { dialog, id ->
-                            // User cancelled the dialog
-                        })
-                        builder.show()
+                                var actualAmmount = beforeammount + anzahl
+                                if (actualAmmount + anzahl > 99) {
+                                    Toast.makeText(context, R.string.anzahl99, Toast.LENGTH_LONG).show()
+                                } else {
+                                    fireDataSnapshot.ref.child("anzahl").setValue(actualAmmount)
+                                    fireDataSnapshot.ref.child("userID").setValue(userID)
+                                }
 
-                        return
+                            })
+                            builder.setNegativeButton("Nein", DialogInterface.OnClickListener { dialog, id ->
+                                // User cancelled the dialog
+                            })
+                            builder.show()
+
+                            return
+                        }
                     }
                 }
                 firRef.child("Artikel").child(key).setValue(EInkaufsItem(title, anzahl, verwalter, key, userID, false, type))
@@ -123,60 +170,68 @@ class FirebaseClient {
 
     //Load data from Firebase
     fun getFirebaseData(verwaltung: String) {
+        val query = firRef.child("Artikel").orderByChild("name")
 
-        firRef.child("Artikel")
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+        query.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                        artikelArray.clear()
+                artikelArray.clear()
 
-                        if (!dataSnapshot.exists()) {
-                            return
-                        }
-
-
-                        val td = dataSnapshot.value as HashMap<String, Any>
-
-                        for (key in td.keys) {
-
-                            val post = td[key] as HashMap<String, Any>
-
-                            //IF you want to save only Verwaltungs Data
-                            val verwalterData = post["verwaltung"].toString()
-                            if (verwalterData.contains(verwaltung)) {
-                                artikelArray.add(EInkaufsItem(
-                                        post["name"] as String,
-                                        post["anzahl"] as Long,
-                                        post["verwaltung"] as String,
-                                        post["firebaseID"] as String,
-                                        post["userID"] as String,
-                                        post["bought"] as Boolean,
-                                        post["type"] as String))
-
-                            } else if (verwaltung == "All") {
-                                artikelArray.add(EInkaufsItem(
-                                        post["name"] as String,
-                                        post["anzahl"] as Long,
-                                        post["verwaltung"] as String,
-                                        post["firebaseID"] as String,
-                                        post["userID"] as String,
-                                        post["bought"] as Boolean,
-                                        post["type"] as String))
-                            }
-                        }
+                if (!dataSnapshot.exists()) {
+                    return
+                }
 
 
-                        if (cons == false) {
-                            shopAdapter!!.notifyDataSetChanged()
-                        } else if (cons == true) {
-                            arrayAdapter!!.notifyDataSetChanged()
-                        }
+                val td = dataSnapshot.value as HashMap<String, Any>
 
+                for (key in td.keys) {
+
+                    val post = td[key] as HashMap<String, Any>
+
+                    //IF you want to save only Verwaltungs Data
+                    val verwalterData = post["verwaltung"].toString()
+                    if (verwalterData.contains(verwaltung)) {
+                        artikelArray.add(EInkaufsItem(
+                                post["name"] as String,
+                                post["anzahl"] as Long,
+                                post["verwaltung"] as String,
+                                post["firebaseID"] as String,
+                                post["userID"] as String,
+                                post["bought"] as Boolean,
+                                post["type"] as String))
+
+                    } else if (verwaltung == "All") {
+                        artikelArray.add(EInkaufsItem(
+                                post["name"] as String,
+                                post["anzahl"] as Long,
+                                post["verwaltung"] as String,
+                                post["firebaseID"] as String,
+                                post["userID"] as String,
+                                post["bought"] as Boolean,
+                                post["type"] as String))
+                    }
+                    //Sorting by name
+                    artikelArray.sortBy {
+                        it.name
                     }
 
-                    override fun onCancelled(p0: DatabaseError?) {
-                    }
-                })
+                }
+
+
+                if (cons == false) {
+                    shopAdapter!!.notifyDataSetChanged()
+                } else if (cons == true) {
+                    arrayAdapter!!.notifyDataSetChanged()
+                }
+
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {
+            }
+
+        })
+
+
     }
 
 
@@ -186,7 +241,7 @@ class FirebaseClient {
     }
 
     fun getFirebaseEmpfehlungen() {
-        firRef.child("Empfehlung").addValueEventListener(object : ValueEventListener {
+        firRef.child("Empfehlung").orderByChild("name").addValueEventListener(object : ValueEventListener {
 
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
 
@@ -210,6 +265,11 @@ class FirebaseClient {
                                 empfehlung["firebaseID"] as String,
                                 empfehlung["counter"] as Long
                         ))
+
+                        //Sort it by name
+                        empfehlungArray.sortBy {
+                            it.name
+                        }
                     }
 
 
@@ -244,6 +304,7 @@ class FirebaseClient {
                         adapter.add(empfehlung["name"] as String)
                     }
 
+
                 }
 
             }
@@ -276,7 +337,7 @@ class FirebaseClient {
         })
     }
 
-    fun saveEhemaligeEinkaeufe(currentDate: String) {
+    fun saveEhemaligeEinkaeufe(currentDate: Long) {
         firRef.child("Artikel").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -335,9 +396,13 @@ class FirebaseClient {
                     val post = td[key] as HashMap<String, Any>
 
                     einkaufsArrayShop.add(EhemaligeEinkaeufe(
-                            post["date"] as String,
+                            post["date"] as Long,
                             post["key"] as String
                     ))
+                    einkaufsArrayShop.sortBy {
+                        it.date
+                    }
+                    einkaufsArrayShop.reverse()
                 }
                 shopAdapter!!.notifyDataSetChanged()
             }
@@ -371,6 +436,10 @@ class FirebaseClient {
                             post["userID"] as String,
                             post["bought"] as Boolean,
                             post["type"] as String))
+
+                    arrayItemList.sortBy {
+                        it.name
+                    }
                 }
                 adapter.notifyDataSetChanged()
             }
@@ -396,4 +465,123 @@ class FirebaseClient {
             }
         })
     }
+
+    fun saveEvent(eventName: String, pickDate: Long, pickTime: String , pickType: String) {
+        var key = firRef.push().key
+        firRef.child("Event").child(key).setValue(EventModel(eventName, pickDate,pickTime,pickType,key))
+    }
+
+
+    fun getEventData(arrayEventList: ArrayList<EventModel>, adapter: EventListAdapter) {
+        firRef.child("Event").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                if (!dataSnapshot.exists()) {
+                    return
+                }
+                arrayEventList.clear()
+
+
+                val td = dataSnapshot.value as HashMap<String, Any>
+
+                for (key in td.keys) {
+
+                    val post = td[key] as HashMap<String, Any>
+
+                    arrayEventList.add(EventModel(
+                            post["name"] as String,
+                            post["date"] as Long,
+                            post["uhrzeit"] as String,
+                            post["type"] as String,
+                            post["firebaseID"] as String))
+                    arrayEventList.sortBy {
+                        it.date
+                    }
+
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+
+            override fun onCancelled(p0: DatabaseError?) {
+            }
+        })
+    }
+
+    fun getEventItems(key: String, arrayEventList: ArrayList<EInkaufsItem>, adapter: EventListItemAdapter) {
+        firRef.child("Event").child(key).child("EventEinkauf").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                if (!dataSnapshot.exists()) {
+                    return
+                }
+                arrayEventList.clear()
+
+
+                val td = dataSnapshot.value as HashMap<String, Any>
+
+                for (key in td.keys) {
+
+                    val post = td[key] as HashMap<String, Any>
+
+                    arrayEventList.add(EInkaufsItem(
+                            post["name"] as String,
+                            post["anzahl"] as Long,
+                            post["verwaltung"] as String,
+                            post["firebaseID"] as String,
+                            post["userID"] as String,
+                            post["bought"] as Boolean,
+                            post["type"] as String))
+
+                    arrayEventList.sortBy {
+                        it.name
+                    }
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+
+            override fun onCancelled(p0: DatabaseError?) {
+            }
+        })
+    }
+
+    fun updateEvent(eventName: String, pickDate: Long, pickTime: String, id: String){
+        firRef.child("Event").addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(dataSnapShot: DataSnapshot) {
+                for(fireSnapShot in dataSnapShot.children){
+                    val keyID = fireSnapShot.child("firebaseID").getValue(String::class.java)!!
+
+                    if(keyID == id){
+                        fireSnapShot.ref.child("name").setValue(eventName)
+                        fireSnapShot.ref.child("date").setValue(pickDate)
+                        fireSnapShot.ref.child("uhrzeit").setValue(pickTime)
+                    }
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        })
+    }
+
+
+    fun deleteEventList(branchKey: String, key: String){
+        var query = firRef.child("Event").child(branchKey).child("EventEinkauf").orderByChild("firebaseID").equalTo(key)
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                for (firesnapshot in dataSnapshot!!.children) {
+                    firesnapshot.ref.removeValue()
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        })
+    }
+
+
 }

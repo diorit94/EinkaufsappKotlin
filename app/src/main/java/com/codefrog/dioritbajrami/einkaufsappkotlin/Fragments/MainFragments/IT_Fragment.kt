@@ -19,6 +19,7 @@ import com.codefrog.dioritbajrami.einkaufsappkotlin.R
 import com.codefrog.dioritbajrami.einkaufsappkotlin.RecyclerItemTouchHelper
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_logged_in.*
+import java.util.*
 
 class IT_Fragment : Fragment()  {
 
@@ -42,9 +43,10 @@ class IT_Fragment : Fragment()  {
         firebaseClient.getFirebaseData("IT")
         //firebaseClient.refreshData()
 
-        (activity as LoggedIn).hideFloatingButton(recyclerView!!)
+        (activity as LoggedIn).hideFloatingButton(recyclerView!!, recyclerView!!.layoutManager as LinearLayoutManager)
 
         return view
     }
+
 
 }

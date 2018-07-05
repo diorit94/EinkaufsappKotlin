@@ -9,6 +9,8 @@ import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.EhemaligeEinkaeufe
 import com.codefrog.dioritbajrami.einkaufsappkotlin.R
 import kotlinx.android.synthetic.main.ehemalige_einkaeufe_row.view.*
 import android.os.Bundle
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class EhemaligeEinkaeufeAdapter(var context: Context, var arrayList: ArrayList<EhemaligeEinkaeufe>) : BaseAdapter(){
@@ -23,7 +25,10 @@ class EhemaligeEinkaeufeAdapter(var context: Context, var arrayList: ArrayList<E
         view = inflator.inflate(R.layout.ehemalige_einkaeufe_row, null)
 
 
-        view.row_dateID.text = ehemaligeEinkaufe.date
+        var formatter = SimpleDateFormat("dd.MMM.yyyy");
+        var dateString = formatter.format(Date(ehemaligeEinkaufe.date!!));
+
+        view.row_dateID.text = dateString
 
         view.setOnClickListener {
             var cx = (context as com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.EhemaligeEinkaeufe)
@@ -31,7 +36,7 @@ class EhemaligeEinkaeufeAdapter(var context: Context, var arrayList: ArrayList<E
 
             //var wrapper = EinkaufsItemWrapper(ehemaligeEinkaufe.einkaufsArrayList)
 
-            bundle.putString("name_key",ehemaligeEinkaufe.date)
+            bundle.putString("name_key", dateString)
             bundle.putString("key_key",ehemaligeEinkaufe.key)
             //bundle.putSerializable("obj",wrapper)
 

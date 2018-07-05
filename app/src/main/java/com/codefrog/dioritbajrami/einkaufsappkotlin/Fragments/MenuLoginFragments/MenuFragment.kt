@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.ListView
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Activities.MainActivity
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.MainMenuAdapter
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.MenuItem
 
@@ -43,11 +44,13 @@ class MenuFragment : Fragment() {
     }
 
     fun getMenuItems(){
-        menuArray.add(MenuItem("Einkaufsliste", R.mipmap.ic_add_shopping_cart_white_24dp))
-        menuArray.add(MenuItem("Artikel hinzu", R.mipmap.ic_playlist_add_white_24dp))
-        menuArray.add(MenuItem("Wunschliste", R.mipmap.outline_star_border_white_24))
-        menuArray.add(MenuItem("Einkauf starten", R.mipmap.ic_shopping_cart_white_24dp))
-        menuArray.add(MenuItem("Ehemalige Einkäufe", R.mipmap.ic_calendar_check_white_24dp))
+        menuArray.add(MenuItem((context as MainActivity).getString(R.string.Einkaufsliste), R.mipmap.ic_add_shopping_cart_white_24dp))
+        menuArray.add(MenuItem((context as MainActivity).getString(R.string.Artikel_hinzu), R.mipmap.ic_playlist_add_white_24dp))
+        menuArray.add(MenuItem((context as MainActivity).getString(R.string.Wuntschliste), R.mipmap.outline_star_border_white_24))
+        menuArray.add(MenuItem((context as MainActivity).getString(R.string.Einkauf_starten), R.mipmap.ic_shopping_cart_white_24dp))
+        menuArray.add(MenuItem((context as MainActivity).getString(R.string.Ehemalige_Einkaufe), R.mipmap.ic_calendar_check_white_24dp))
+        menuArray.add(MenuItem((context as MainActivity).getString(R.string.Events), R.mipmap.baseline_event_white_24))
+
     }
 
 }

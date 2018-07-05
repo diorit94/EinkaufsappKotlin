@@ -12,10 +12,11 @@ import com.codefrog.dioritbajrami.einkaufsappkotlin.FirebaseClient
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Models.Empfehlungen
 import com.codefrog.dioritbajrami.einkaufsappkotlin.R
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.widget.RelativeLayout
 import android.widget.Toast
 import com.codefrog.dioritbajrami.einkaufsappkotlin.RecyclerItemTouchHelper
 import com.google.firebase.auth.FirebaseAuth
-
+import kotlinx.android.synthetic.main.empfehlung_row.*
 
 class Empfehlung_activity : AppCompatActivity(), RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
@@ -24,10 +25,14 @@ class Empfehlung_activity : AppCompatActivity(), RecyclerItemTouchHelper.Recycle
     var adapter: EmpfehlungsAdapter? = null
     var mAuth: FirebaseAuth? = null
     var cordinatorLayout: CoordinatorLayout? = null
+    var itemTouchHelperCallback: RecyclerItemTouchHelper?=null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_empfehlung_activity)
+
+        title = this.getString(R.string.Wuntschliste)
 
         cordinatorLayout = findViewById(R.id.cordinatorLayoutEmpfehlungen)
 
@@ -38,13 +43,17 @@ class Empfehlung_activity : AppCompatActivity(), RecyclerItemTouchHelper.Recycle
         adapter = EmpfehlungsAdapter(empfehlungsArray, this)
         recyclerView!!.adapter = adapter
 
-        val itemTouchHelperCallback = RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this)
-        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView)
+        mAuth = FirebaseAuth.getInstance()
+
+        if(mAuth!!.currentUser!!.uid == "eIeqKuxSsxZekufpxEy4jmik8DA3"){
+            itemTouchHelperCallback = RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this)
+            ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView)
+        }
+
 
         var firebaseClient = FirebaseClient(empfehlungsArray, adapter!!)
         firebaseClient.getFirebaseEmpfehlungen()
 
-        mAuth = FirebaseAuth.getInstance()
 
     }
 
@@ -56,6 +65,7 @@ class Empfehlung_activity : AppCompatActivity(), RecyclerItemTouchHelper.Recycle
 
     }*/
 
+
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int, position: Int) {
         val firebaseClient = FirebaseClient()
 
@@ -65,14 +75,10 @@ class Empfehlung_activity : AppCompatActivity(), RecyclerItemTouchHelper.Recycle
 
             var key: String = empfehlungsArray.get(viewHolder.adapterPosition).firebaseID
 
-            if (mAuth!!.currentUser!!.uid != "eIeqKuxSsxZekufpxEy4jmik8DA3") {
-                Toast.makeText(this, "Nur der Administrator kan Artikel aus dieser Liste löschen.", Toast.LENGTH_LONG).show()
-            } else {
-                firebaseClient.deleteFirebase("Empfehlung", key)
-                adapter!!.removeItem(viewHolder.getAdapterPosition())
-                showSnackBar(name, counter)
 
-            }
+            firebaseClient.deleteFirebase("Empfehlung", key)
+            adapter!!.removeItem(viewHolder.getAdapterPosition())
+            showSnackBar(name, counter)
 
         }
 

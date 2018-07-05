@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 app:layout_constraintStart_toEndOf="@id/artikelZahlID"
+                android:text="Test"
                 />
 
         </LinearLayout>

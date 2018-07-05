@@ -1,0 +1,59 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android.support.design="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="20dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="20dp"
+    android:minWidth="300dp">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/nameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Event Name"
+        android.support.design:hintAnimationEnabled="true"
+        android.support.design:hintEnabled="true">
+
+        <AutoCompleteTextView
+            android:id="@+id/name_event_alert_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:capitalize="sentences"
+            android:singleLine="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/pickDateID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Datum?"
+        android:gravity="left|center"
+        style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+        />
+
+    <Button
+        android:id="@+id/pickTimeID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Uhrzeit?"
+        android:gravity="left|center"
+        style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+        />
+
+    <Button
+        android:id="@+id/event_hinzufügen_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Event Starten"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:padding="10dp"
+        android:layout_gravity="right"/>
+
+</LinearLayout>

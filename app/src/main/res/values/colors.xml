@@ -14,4 +14,15 @@
     <color name="bg_row_background">#fa315b</color>
     <color name="TransparentcolorPrimary">#9099cc00</color>
 
+    <color name="fabColorText">#212121</color>
+    <color name="fabColorBackground">#FFFFFF</color>
+
+    <color name="fabBlue">#4885ed</color>#
+    <color name="darkBlue">#396abd</color>
+
+    <color name="fabRed">#db3236</color>
+    <color name="darkRed">#af282b</color>
+
+    <color name="fabYellow">#f4c20d</color>
+    <color name="darkYellow">#c39b0a</color>
 </resources>

@@ -15,6 +15,27 @@
         <item name="colorAccent">@color/SecondcolorAccent</item>
     </style>
 
+    <style name="essenStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/fabRed</item>
+        <item name="colorPrimaryDark">@color/darkRed</item>
+        <item name="colorAccent">@color/fabRed</item>
+    </style>
+
+    <style name="GeburtstagStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/fabBlue</item>
+        <item name="colorPrimaryDark">@color/darkBlue</item>
+        <item name="colorAccent">@color/fabBlue</item>
+    </style>
+
+    <style name="andereStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/fabYellow</item>
+        <item name="colorPrimaryDark">@color/darkYellow</item>
+        <item name="colorAccent">@color/fabYellow</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

@@ -23,6 +23,7 @@ class Verwaltung_Fragment : Fragment() {
     var itemArray = ArrayList<EInkaufsItem>()
     var itemAdapter: EinkaufsItemAdapter?=null
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_verwaltung_, container, false)
 
@@ -36,7 +37,7 @@ class Verwaltung_Fragment : Fragment() {
         val firebaseClient = FirebaseClient(itemArray,itemAdapter!!)
         firebaseClient.getFirebaseData("Verwaltung")
         //firebaseClient.refreshData()
-        (activity as LoggedIn).hideFloatingButton(recyclerView!!)
+        (activity as LoggedIn).hideFloatingButton(recyclerView!!, recyclerView!!.layoutManager as LinearLayoutManager)
 
         return view
     }

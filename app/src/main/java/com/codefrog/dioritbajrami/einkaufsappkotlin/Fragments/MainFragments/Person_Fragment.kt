@@ -37,7 +37,7 @@ class Person_Fragment : Fragment() {
         val firebaseClient = FirebaseClient(itemArray,itemAdapter!!)
         firebaseClient.getFirebaseData("Person")
         //firebaseClient.refreshData()
-        (activity as LoggedIn).hideFloatingButton(recyclerView!!)
+        (activity as LoggedIn).hideFloatingButton(recyclerView!!, recyclerView!!.layoutManager as LinearLayoutManager)
 
         return view
     }

@@ -18,12 +18,6 @@ import android.icu.lang.UProperty.INT_START
 import android.text.style.RelativeSizeSpan
 import android.text.SpannableString
 
-
-
-
-
-
-
 class EinkaufsItemAdapter(val context: Context,val einkaufsArray: ArrayList<EInkaufsItem>) : RecyclerView.Adapter<EinkaufsItemAdapter.ViewHolder>(){
 
 
@@ -39,11 +33,7 @@ class EinkaufsItemAdapter(val context: Context,val einkaufsArray: ArrayList<EInk
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         val einkaufsItem = einkaufsArray[position]
 
-
-        val ss1 = SpannableString(einkaufsItem.Type)
-        ss1.setSpan(RelativeSizeSpan(2f), 0, ss1.length, 0)
-
-        holder!!.artikelName.text = einkaufsItem.name + ", " + ss1
+        holder!!.artikelName.text = einkaufsItem.name + ", " + einkaufsItem.Type
 
         holder.artikelZahl.text = einkaufsItem.anzahl.toString() + "x"
 
@@ -51,10 +41,9 @@ class EinkaufsItemAdapter(val context: Context,val einkaufsArray: ArrayList<EInk
             holder.artikelVerwaltung.text = "Verwaltung"
         }else if(einkaufsItem.verwaltung == "IT"){
             holder.artikelVerwaltung.text = "IT"
-        }else if(einkaufsItem.verwaltung.contains("(Person)")){
+        }else if(einkaufsItem.verwaltung!!.contains("(Person)")){
             holder.artikelVerwaltung.text = einkaufsItem.verwaltung
         }
-
 
         val getContextCurrentUser = (context as LoggedIn).mAuth!!.currentUser!!.uid
         var firebaseClient = FirebaseClient()
@@ -67,19 +56,18 @@ class EinkaufsItemAdapter(val context: Context,val einkaufsArray: ArrayList<EInk
 
         holder.artikelButton.setOnClickListener {
                 if ((context).mAuth!!.currentUser!!.uid == einkaufsItem.userID) {
-                    firebaseClient.deleteFirebase("Artikel",einkaufsItem.firebaseID)
+                    firebaseClient.deleteFirebase("Artikel",einkaufsItem.firebaseID!!)
                     removeItem(position)
                 } else if((context).mAuth!!.currentUser!!.uid == "eIeqKuxSsxZekufpxEy4jmik8DA3"){
-                    firebaseClient.deleteFirebase("Artikel",einkaufsItem.firebaseID)
+                    firebaseClient.deleteFirebase("Artikel",einkaufsItem.firebaseID!!)
                     removeItem(position)
                 } else {
                     Toast.makeText(context, "Kannst es nicht löschen da du es selber nicht hinzugefügt hast", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
                 //SHOW THE SNACKBAR TO RETURN DELETION
-                (context).showSnackBar(einkaufsItem.name,einkaufsItem.anzahl, einkaufsItem.userID,einkaufsItem.verwaltung, einkaufsItem.Type)
+                (context).showSnackBar(einkaufsItem.name!!,einkaufsItem.anzahl!!, einkaufsItem.userID!!,einkaufsItem.verwaltung!!, einkaufsItem.Type!!)
         }
-
 
     }
 

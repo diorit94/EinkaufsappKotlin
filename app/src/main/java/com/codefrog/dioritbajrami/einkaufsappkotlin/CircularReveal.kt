@@ -7,7 +7,7 @@ import android.view.ViewAnimationUtils
 import android.widget.RelativeLayout
 import kotlinx.android.synthetic.main.activity_logged_in.*
 
-class CircularReveal(){
+class CircularReveal{
 
     fun getCircularReveal(relativeLayout: RelativeLayout,contentLayout: RelativeLayout, layoutMain: RelativeLayout){
         val x = contentLayout!!.right
