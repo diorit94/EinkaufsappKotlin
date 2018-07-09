@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/titlelauncher"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:layout_marginBottom="5dp"
+        android:textStyle="bold"
+        android:text="Testing da app"
+        android:textColor="@color/white"
+        />
+
+    <TextView
+        android:id="@+id/textlauncher"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="15sp"
+        android:layout_below="@+id/titlelauncher"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/white"
+
+        android:text="Hallo das sieht ganz hübsch aus was geht bei dir"/>
+
+</RelativeLayout>

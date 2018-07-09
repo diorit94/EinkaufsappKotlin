@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/einkauf_abbrechen_button_background"
                         android:clickable="true"
-                        android:text="Einkauf Abbrechen"
+                        android:text="Einkauf abbrechen"
                         android:textColor="@color/white"
                         android:textAllCaps="false"
                         />
@@ -54,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/einkauf_abschliessen_button_background"
                         android:clickable="true"
-                        android:text="Einkauf Abschliessen"
+                        android:text="Einkauf abschließen"
                         android:textColor="@color/white"
                         android:textAllCaps="false"
                         />

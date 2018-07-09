@@ -146,7 +146,7 @@ class LoggedIn : AppCompatActivity() {
 
     fun showSnackBar(title: String, anzahl: Long, userID: String, verwalter: String, type: String) {
         val snackBar = Snackbar
-                .make(layoutContent!!, "$title,$anzahl wurde gelöscht!", Snackbar.LENGTH_LONG)
+                .make(layoutContent!!, "" + anzahl + "x $title, $type wurde gelöscht!", Snackbar.LENGTH_LONG)
                 .setAction("Rückgängig machen") {
                     val fireClient = FirebaseClient()
                     fireClient.saveFirebaseData(title, anzahl, userID, verwalter, type)

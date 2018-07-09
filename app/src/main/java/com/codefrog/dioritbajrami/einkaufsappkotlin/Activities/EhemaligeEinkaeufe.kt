@@ -1,6 +1,7 @@
 package com.codefrog.dioritbajrami.einkaufsappkotlin.Activities
 
 import android.app.PendingIntent.getActivity
+import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.codefrog.dioritbajrami.einkaufsappkotlin.Fragments.EhemaligFragments.EhemaligeEinkaufsListe
@@ -46,5 +47,6 @@ class EhemaligeEinkaeufe : AppCompatActivity() {
             super.onBackPressed()
         }
     }
+
 
 }

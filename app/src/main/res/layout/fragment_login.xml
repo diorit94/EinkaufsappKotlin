@@ -4,57 +4,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.MainActivity"
-    android:orientation="vertical"
     android:gravity="center"
-    >
+    android:orientation="vertical"
+    android:background="@drawable/login_shadow"
+    tools:context=".Activities.MainActivity">
 
 
     <LinearLayout
-        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
-        android:orientation="vertical"
+        android:layout_weight="1"
         android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        >
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageView
+            android:id="@+id/froshPicID"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:contentDescription="@string/app_name"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:src="@drawable/frosh"/>
+            android:src="@drawable/frosh" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:gravity="center"
-        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        >
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
+
+        <com.rd.PageIndicatorView
+            android:id="@+id/pageIndicatorView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            app:piv_animationType="worm"
+            app:piv_selectedColor="@color/white"
+            app:piv_unselectedColor="@color/grey"
+            app:piv_viewPager="@id/pager" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:paddingBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/SignInButtonID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             app:layout_constraintBottom_toTopOf="@id/administratorLoginID" />
 
         <Button
             android:id="@+id/administratorLoginID"
+            style="@style/Base.Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
-            android:layout_height="38dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/Administrator"
             android:textAllCaps="false"
-            app:layout_constraintTop_toBottomOf="@+id/SignInButtonID"
-            android:background="@drawable/ripple_effect"
             android:textColor="@color/white"
-            android:layout_margin="4dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/SignInButtonID" />
 
     </LinearLayout>
-
 </LinearLayout>

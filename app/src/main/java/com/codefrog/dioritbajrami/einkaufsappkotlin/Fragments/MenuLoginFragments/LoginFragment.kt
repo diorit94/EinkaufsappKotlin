@@ -21,7 +21,13 @@ import com.google.firebase.auth.FirebaseAuth
 import java.util.*
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.support.v4.view.ViewPager
 import kotlinx.android.synthetic.main.custom_alert.*
+import android.support.v7.app.AppCompatActivity
+import com.codefrog.dioritbajrami.einkaufsappkotlin.Adapters.ViewPagerAdapter
+import com.rd.PageIndicatorView
+
+
 
 
 class LoginFragment : Fragment() {
@@ -35,8 +41,28 @@ class LoginFragment : Fragment() {
 
     var mProgress: ProgressDialog?=null
 
+    var pagerAdapter: ViewPagerAdapter?=null
+    var viewPager: ViewPager?=null
+
+    var title = arrayOf("Race your Friend", "Find new Roads", "Try new Things")
+    var titleText = arrayOf("Try to get to the end before your friend, the winner gets it all.",
+            "Chose anypoint in the Map and get there within the time.",
+            "Try the latest App which allows you to go through woods, roads until you reach the destionation.")
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_login, container, false)
+
+        activity!!.title = "Anmelden"
+        (activity as MainActivity).supportActionBar!!.hide()
+
+        pagerAdapter = ViewPagerAdapter((activity as MainActivity).applicationContext,title,titleText)
+        viewPager = view.findViewById(R.id.pager)
+        viewPager!!.adapter = pagerAdapter
+
+
+        val pageIndicatorView = view.findViewById(R.id.pageIndicatorView) as PageIndicatorView
+        pageIndicatorView.setViewPager(viewPager)
+
 
         mAuth = FirebaseAuth.getInstance()
 

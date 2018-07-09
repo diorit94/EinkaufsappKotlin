@@ -25,7 +25,7 @@ class EhemaligeEinkaeufeAdapter(var context: Context, var arrayList: ArrayList<E
         view = inflator.inflate(R.layout.ehemalige_einkaeufe_row, null)
 
 
-        var formatter = SimpleDateFormat("dd.MMM.yyyy");
+        var formatter = SimpleDateFormat("dd. MMMM yyyy");
         var dateString = formatter.format(Date(ehemaligeEinkaufe.date!!));
 
         view.row_dateID.text = dateString

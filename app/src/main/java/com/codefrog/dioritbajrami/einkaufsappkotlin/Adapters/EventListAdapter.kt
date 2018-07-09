@@ -46,7 +46,7 @@ class EventListAdapter(var context: Context, var arrayEventList: ArrayList<Event
 
         holder!!.eventName.text = event.name
 
-        var formatter = SimpleDateFormat("dd.MMM.yyyy");
+        var formatter = SimpleDateFormat("dd. MMMM yyyy");
         var dateString = formatter.format(Date(event.date));
 
         holder!!.eventDate.text = dateString
@@ -114,7 +114,7 @@ class EventListAdapter(var context: Context, var arrayEventList: ArrayList<Event
         val option = arrayOf("Bearbeiten", "Löschen")
         val adapter = ArrayAdapter<String>(context, android.R.layout.simple_selectable_list_item, option)
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("Aktion Auswählen")
+        builder.setTitle("Aktion auswählen")
         builder.setAdapter(adapter, DialogInterface.OnClickListener { dialogInterface, i ->
             if (i == 0) {
                 alerts.updateEvent(model)
@@ -129,7 +129,7 @@ class EventListAdapter(var context: Context, var arrayEventList: ArrayList<Event
 
     fun startAlertEinkaufAbschliessen(model:EventModel, position: Int) {
         val builder = android.app.AlertDialog.Builder(context)
-        builder.setMessage("Event sicher Löschen?")
+        builder.setMessage(model.name+" löschen?")
         builder.setPositiveButton("Ja", DialogInterface.OnClickListener { dialog, id ->
             fclient.deleteFirebase("Event", model.firebaseID)
             removeItem(position)

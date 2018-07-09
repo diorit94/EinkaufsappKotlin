@@ -40,7 +40,7 @@ class IT_Fragment : Fragment()  {
 
 
         val firebaseClient = FirebaseClient(itemArray,itemAdapter!!)
-        firebaseClient.getFirebaseData("IT")
+        firebaseClient.getFirebaseData("IT","Artikel")
         //firebaseClient.refreshData()
 
         (activity as LoggedIn).hideFloatingButton(recyclerView!!, recyclerView!!.layoutManager as LinearLayoutManager)

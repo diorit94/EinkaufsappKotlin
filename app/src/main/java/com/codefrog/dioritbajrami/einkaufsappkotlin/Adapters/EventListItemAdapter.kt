@@ -54,7 +54,7 @@ class EventListItemAdapter(var context: Context, var arrayEventList: ArrayList<E
 
     fun deleteDialog(eventName: String,firebaseID: String, position: Int){
         val builder = android.app.AlertDialog.Builder(context)
-        builder.setMessage(eventName + " sicher Löschen?")
+        builder.setMessage(eventName + " löschen?")
         builder.setPositiveButton("Ja", DialogInterface.OnClickListener { dialog, id ->
             firebaseClient.deleteEventList((context as EventItemActivity).firebaseIDKey!!, firebaseID)
             removeItem(position)

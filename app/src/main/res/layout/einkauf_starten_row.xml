@@ -42,13 +42,13 @@
 
         </LinearLayout>
 
-        <TextView
+        <!--<TextView
             android:id="@+id/verwaltungStartID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PERSONI SHET"
             android:textColor="@color/TransparentcolorPrimary"
-            android:textSize="12sp"/>
+            android:textSize="12sp"/>-->
 
     </LinearLayout>
 

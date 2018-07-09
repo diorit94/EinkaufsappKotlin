@@ -58,9 +58,11 @@ class EinkaufsItemAdapter(val context: Context,val einkaufsArray: ArrayList<EInk
                 if ((context).mAuth!!.currentUser!!.uid == einkaufsItem.userID) {
                     firebaseClient.deleteFirebase("Artikel",einkaufsItem.firebaseID!!)
                     removeItem(position)
+                    firebaseClient.deleteEinkaufsStartenItem(einkaufsItem.name!!, einkaufsItem.anzahl!!,einkaufsItem.Type!!)
                 } else if((context).mAuth!!.currentUser!!.uid == "eIeqKuxSsxZekufpxEy4jmik8DA3"){
                     firebaseClient.deleteFirebase("Artikel",einkaufsItem.firebaseID!!)
                     removeItem(position)
+                    firebaseClient.deleteEinkaufsStartenItem(einkaufsItem.name!!, einkaufsItem.anzahl!!,einkaufsItem.Type!!)
                 } else {
                     Toast.makeText(context, "Kannst es nicht löschen da du es selber nicht hinzugefügt hast", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener

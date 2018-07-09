@@ -38,7 +38,7 @@ class Alerts(val context: Context) {
 
 
     //Dropt down list Items
-    var dropDownArray = arrayOf("Stück", "Kiste", "Flasche", "Dose", "Packung", "Beutel", "Schachtel", "Palette")
+    var dropDownArray = arrayOf("Stück", "Kiste", "Flasche", "Dose", "Karton", "Packung", "Beutel", "Schachtel", "Palette", "Fass")
 
     fun startAlert(editText: String) {
 
@@ -78,7 +78,7 @@ class Alerts(val context: Context) {
             val radio_itbtn = d.findViewById<RadioButton>(R.id.radio_it)
             val radio_verwaltung_btn = d.findViewById<RadioButton>(R.id.radio_verwaltung)
 
-            if (!radio_itbtn.isChecked() && !radio_verwaltung_btn.isChecked() && !radio_person_btn.isChecked() || name.getText().toString().isEmpty() || ammount.getText().toString().isEmpty()) {
+            if (!radio_itbtn.isChecked() && !radio_verwaltung_btn.isChecked() && !radio_person_btn.isChecked() || name.getText().toString().isEmpty() || ammount.getText().toString().isEmpty() || name.text.toString().startsWith(" ")) {
                 Toast.makeText(context, "Bitte alle Felder füllen!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             } else if (ammount.text.toString().toInt() <= 0) {
@@ -87,6 +87,7 @@ class Alerts(val context: Context) {
             }
             else if (radio_itbtn.isChecked) {
                 fireClient.saveFirebaseData(name.text.toString(), ammount.text.toString().toLong(), currentUserID, "IT", spinner.selectedItem.toString())
+
                 d.dismiss()
             } else if (radio_verwaltung_btn.isChecked) {
                 fireClient.saveFirebaseData(name.text.toString(), ammount.text.toString().toLong(), currentUserID, "Verwaltung", spinner.selectedItem.toString())
@@ -104,7 +105,7 @@ class Alerts(val context: Context) {
                 d.dismiss()
             }
 
-
+            //fireClient.saveEinkaufsStartenFirebaseData(name.text.toString(), ammount.text.toString().toLong(), currentUserID, "", spinner.selectedItem.toString())
             fireClient.checkIfEmpfehlungExists(name.text.toString())
 
         }
@@ -163,7 +164,7 @@ class Alerts(val context: Context) {
 
         d.event_hinzufügen_id.setOnClickListener {
 
-            if (eventName.text.toString().isEmpty() || d.pickDateID.text.toString() == "Datum?" || d.pickTimeID.text.toString() == "Uhrzeit?") {
+            if (eventName.text.toString().isEmpty() || d.pickDateID.text.toString() == "Datum?" || d.pickTimeID.text.toString() == "Uhrzeit?" || eventName.text.toString().startsWith(" ")) {
                 Toast.makeText(context, "Bitte alle Felder füllen!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -200,7 +201,7 @@ class Alerts(val context: Context) {
 
         d.addEventItemButtonID.setOnClickListener {
 
-            if (name.text.toString().isEmpty() || ammount.text.toString().isEmpty()) {
+            if (name.text.toString().isEmpty() || ammount.text.toString().isEmpty() || name.text.toString().startsWith(" ")) {
                 Toast.makeText(context, "Bitte alle Felder füllen!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             } else if (ammount.text.toString().toInt() <= 0) {
@@ -292,7 +293,7 @@ class Alerts(val context: Context) {
         d.event_hinzufügen_id.text = "Event ändern"
         d.event_hinzufügen_id.setOnClickListener {
 
-            if (eventName.text.toString().isEmpty() || d.pickDateID.text.toString() == "Datum?" || d.pickTimeID.text.toString() == "Uhrzeit?") {
+            if (eventName.text.toString().isEmpty() || d.pickDateID.text.toString() == "Datum?" || d.pickTimeID.text.toString() == "Uhrzeit?" || eventName.text.toString().startsWith(" ")) {
                 Toast.makeText(context, "Bitte alle Felder füllen!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -314,7 +315,7 @@ class Alerts(val context: Context) {
         eventName.setText(model.name)
         d.pickTimeID.text = model.uhrzeit
 
-        var formatter = SimpleDateFormat("dd/MM/yyyy");
+        var formatter = SimpleDateFormat("dd.MM.yyyy");
         var dateString = formatter.format(Date(model.date));
 
         d.pickDateID.text = dateString
@@ -322,6 +323,5 @@ class Alerts(val context: Context) {
 
         d.show()
     }
-
 
 }

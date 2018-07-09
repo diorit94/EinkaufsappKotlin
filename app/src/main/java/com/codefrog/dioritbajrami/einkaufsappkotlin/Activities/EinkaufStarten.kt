@@ -55,7 +55,7 @@ class EinkaufStarten : AppCompatActivity() {
         listView!!.isStackFromBottom = false
         val firebaseClient = FirebaseClient(einkaufArray, startenAdapter)
 
-        firebaseClient.getFirebaseData("All")
+        firebaseClient.getFirebaseData("All", "EinkaufsStarten")
 
         abschliessButton = findViewById(R.id.buttonEinkaufAbschliessenID)
         abbrechButton = findViewById(R.id.buttonEinkaufAbbrechenID)
@@ -80,7 +80,7 @@ class EinkaufStarten : AppCompatActivity() {
                 startAlertEinkaufAbschliessen(applicationContext.getString(R.string.nicht_alles_gekauft),false)
                 return
             }
-        startAlertEinkaufAbschliessen("Einkauf abschliessen?", false)
+        startAlertEinkaufAbschliessen("Einkauf abschließen?", false)
     }
 
     //Look branch in database if all are true
@@ -129,8 +129,8 @@ class EinkaufStarten : AppCompatActivity() {
         })
     }
 
-    fun returnToBoughtToFalse(){
-        firRef.child("Artikel").addListenerForSingleValueEvent(object : ValueEventListener{
+    fun returnToBoughtToFalse(branch: String){
+        firRef.child(branch).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 for(fireSnapShot in dataSnapshot!!.children){
                     fireSnapShot.ref.child("bought").setValue(false)
@@ -152,9 +152,11 @@ class EinkaufStarten : AppCompatActivity() {
             if(!abbrechen){
                 val fireClient = FirebaseClient()
                 fireClient.saveEhemaligeEinkaeufe(currentTime)
+                firRef.child("EinkaufsStarten").removeValue()
                 Toast.makeText(this, "Eingekauft!", Toast.LENGTH_SHORT).show()
             } else {
-                returnToBoughtToFalse()
+                returnToBoughtToFalse("Artikel")
+                returnToBoughtToFalse("EinkaufsStarten")
             }
             finish()
         })

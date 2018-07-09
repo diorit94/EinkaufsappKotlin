@@ -89,14 +89,15 @@ class FirebaseClient {
                         if (einheit == type) {
                             if (firesnapshot.exists() && userid == userID && verwaltung == verwalter) {
                                 val builder = AlertDialog.Builder(context)
-                                builder.setMessage("Es existiert bereits " + beforeammount + "x $title auf der Liste für die $verwalter, noch $anzahl hinzufügen?")
+                                builder.setMessage("Es existiert bereits " + beforeammount + "x $title, $type auf der Liste für die $verwalter, noch $anzahl hinzufügen?")
                                 builder.setPositiveButton("Ja", DialogInterface.OnClickListener { dialog, id ->
 
                                     var actualAmmount = beforeammount + anzahl
-                                    if (actualAmmount + anzahl > 99) {
+                                    if (actualAmmount > 99) {
                                         Toast.makeText(context, R.string.anzahl99, Toast.LENGTH_LONG).show()
                                     } else {
                                         firesnapshot.ref.child("anzahl").setValue(beforeammount + anzahl)
+                                        saveEinkaufsStartenFirebaseData(title, anzahl, userID, verwalter, type)
                                     }
 
                                 })
@@ -109,6 +110,8 @@ class FirebaseClient {
                         }
                     }
                     firRef.child("Artikel").child(key).setValue(EInkaufsItem(title, anzahl, verwalter, key, userID, false, type))
+                    saveEinkaufsStartenFirebaseData(title, anzahl, userID, verwalter, type)
+
 
                 }
 
@@ -131,18 +134,19 @@ class FirebaseClient {
                     if (einheit == type) {
                         if (fireDataSnapshot.exists() && verwaltung == verwalter) {
                             val builder = AlertDialog.Builder(context)
-                            builder.setMessage("Es existiert bereits " + zahl + "x $title,$type auf der Liste für die $verwalter, noch $anzahl hinzufügen?")
+                            builder.setMessage("Es existiert bereits " + zahl + "x $title, $type auf der Liste für die $verwalter, noch $anzahl hinzufügen?")
                             builder.setPositiveButton("Ja", DialogInterface.OnClickListener { dialog, id ->
 
                                 val beforeammount = fireDataSnapshot.child("anzahl").getValue(Int::class.java)!!
                                 val userUID = fireDataSnapshot.child("userID").getValue(String::class.java)
 
                                 var actualAmmount = beforeammount + anzahl
-                                if (actualAmmount + anzahl > 99) {
+                                if (actualAmmount > 99) {
                                     Toast.makeText(context, R.string.anzahl99, Toast.LENGTH_LONG).show()
                                 } else {
                                     fireDataSnapshot.ref.child("anzahl").setValue(actualAmmount)
                                     fireDataSnapshot.ref.child("userID").setValue(userID)
+                                    saveEinkaufsStartenFirebaseData(title, anzahl, userID, verwalter, type)
                                 }
 
                             })
@@ -156,6 +160,7 @@ class FirebaseClient {
                     }
                 }
                 firRef.child("Artikel").child(key).setValue(EInkaufsItem(title, anzahl, verwalter, key, userID, false, type))
+                saveEinkaufsStartenFirebaseData(title, anzahl, userID, verwalter, type)
             }
 
 
@@ -167,10 +172,35 @@ class FirebaseClient {
 
     }
 
+    fun saveEinkaufsStartenFirebaseData(title: String, anzahl: Long, userID: String, verwalter: String, type: String) {
+        val key = firRef.push().key
+        //firRef.child("EinkaufsStarten").child(key).setValue(EInkaufsItem(title, anzahl, verwalter, key, userID, false, type))
+        firRef.child("EinkaufsStarten").orderByChild("name").equalTo(title).addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(dataSnapShot: DataSnapshot?) {
+                for(fireSnapShot in dataSnapShot!!.children){
+                    val zahl = fireSnapShot.child("anzahl").getValue(Int::class.java)!!
+                    val einheit = fireSnapShot.child("type").getValue(String::class.java)
 
-    //Load data from Firebase
-    fun getFirebaseData(verwaltung: String) {
-        val query = firRef.child("Artikel").orderByChild("name")
+                    if(einheit == type){
+                        val totalAmmount = zahl + anzahl
+
+                        fireSnapShot.ref.child("anzahl").setValue(totalAmmount)
+                        return
+                    }
+                }
+                firRef.child("EinkaufsStarten").child(key).setValue(EInkaufsItem(title, anzahl, verwalter, key, userID, false, type))
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        })
+    }
+
+
+        //Load data from Firebase
+    fun getFirebaseData(verwaltung: String, branch: String) {
+        val query = firRef.child(branch).orderByChild("name")
 
         query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -574,6 +604,33 @@ class FirebaseClient {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 for (firesnapshot in dataSnapshot!!.children) {
                     firesnapshot.ref.removeValue()
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        })
+    }
+
+
+    fun deleteEinkaufsStartenItem(name:String, number: Long, type: String){
+        var query = firRef.child("EinkaufsStarten").orderByChild("name").equalTo(name)
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(dataSnapShot: DataSnapshot?) {
+                for(fireSnapShot in dataSnapShot!!.children){
+                    val anzahl = fireSnapShot.child("anzahl").getValue(Long::class.java)!!
+                    val einheit = fireSnapShot.child("type").getValue(String::class.java)!!
+
+                    if(type == einheit){
+                        val finalValue = anzahl-number
+                        fireSnapShot.ref.child("anzahl").setValue(finalValue)
+
+                        if(finalValue<=0){
+                            fireSnapShot.ref.removeValue()
+                        }
+                    }
                 }
             }
 

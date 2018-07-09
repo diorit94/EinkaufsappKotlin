@@ -9,7 +9,9 @@
     <color name="SecondcolorAccent">#EE7600</color>
 
     <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
     <color name="grey">#d3d3d3</color>
+    <color name="darkgrey">#696969</color>
 
     <color name="bg_row_background">#fa315b</color>
     <color name="TransparentcolorPrimary">#9099cc00</color>
